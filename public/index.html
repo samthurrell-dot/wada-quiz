@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Wada you know about colour?</title>
+<meta name="description" content="A daily puzzle: name Sanzo Wada's colours from cryptic crossword clues.">
+<meta property="og:title" content="Wada you know about colour?">
+<meta property="og:description" content="A daily puzzle: name Sanzo Wada's colours from cryptic crossword clues.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='10' height='30' fill='%23bb7125'/%3E%3Crect x='10' width='10' height='30' fill='%2312354e'/%3E%3Crect x='20' width='10' height='30' fill='%23a62c37'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#faf5e1; --raised:#fffdf6; --line:#d9d3bb; --line-strong:#547076;
+  --ink:#111314; --ink-soft:#34454c; --ink-muted:#547076; --accent:#12354e; --on-accent:#ffefae;
+  --good:#437742; --bad:#a62c37;
+  --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",Georgia,serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --paper:#111314; --raised:#1d2225; --line:#2c373c; --line-strong:#6b8a91;
+  --ink:#f5ecc2; --ink-soft:#b6bfc1; --ink-muted:#a1a39a; --accent:#97acc8; --on-accent:#111314; --good:#96d1aa; --bad:#f58e84;}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --paper:#111314; --raised:#1d2225; --line:#2c373c; --line-strong:#6b8a91;
+  --ink:#f5ecc2; --ink-soft:#b6bfc1; --ink-muted:#a1a39a; --accent:#97acc8; --on-accent:#111314; --good:#96d1aa; --bad:#f58e84;}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;}
+.wrap{max-width:640px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:20px;}
+h1,h2,h3{font-family:var(--serif);font-weight:800;margin:0;text-wrap:balance;}
+p{margin:0;}
+.label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);}
+.mono{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;}
+.muted{color:var(--ink-muted);}
+button{font:inherit;}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.btn{min-height:48px;padding:0 20px;border:0;border-radius:2px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:16px;cursor:pointer;}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line-strong);}
+.btn[disabled]{opacity:.45;cursor:not-allowed;}
+
+/* start screen */
+.hero{display:flex;flex-direction:column;gap:16px;}
+.hero h1{font-size:clamp(38px,10vw,64px);line-height:.98;letter-spacing:-.01em;}
+.hero h1 em{font-style:normal;display:inline-block;padding:0 .12em;background:#bb7125;color:#111314;}
+.strip{display:flex;height:18px;}
+.strip span{flex:1;}
+.choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.opt{display:flex;flex-direction:column;gap:4px;padding:14px;border:1px solid var(--line-strong);border-radius:2px;background:var(--raised);color:var(--ink);text-align:left;cursor:pointer;}
+.opt[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:-3px;}
+.opt b{font-family:var(--serif);font-size:19px;}
+.opt span{font-size:14px;color:var(--ink-soft);}
+.rules{display:flex;flex-direction:column;gap:6px;font-size:15px;color:var(--ink-soft);}
+.best{font-size:14px;color:var(--ink-muted);}
+
+/* game */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.pips{display:flex;gap:4px;flex:1;max-width:260px;}
+.pips i{flex:1;height:6px;background:var(--line);}
+.pips i.p3{background:var(--good);} .pips i.p2{background:var(--good);opacity:.7;} .pips i.p1{background:var(--good);opacity:.45;} .pips i.p0{background:var(--bad);} .pips i.now{background:var(--ink);}
+.swatch{height:clamp(200px,46vw,300px);position:relative;border:1px solid var(--line);}
+.swatch .no{position:absolute;left:12px;top:10px;font-family:var(--mono);font-size:13px;padding:2px 8px;background:var(--paper);color:var(--ink);}
+.hints{display:flex;flex-direction:column;gap:8px;}
+.hintbtn{display:flex;gap:10px;flex-wrap:wrap;}
+.hint{padding:10px 12px;border:1px dashed var(--line-strong);font-size:16px;color:var(--ink);}
+.hint b{font-weight:700;}
+.letters{font-family:var(--mono);font-size:18px;letter-spacing:.12em;word-spacing:.5em;}
+.answers{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;}
+@media (min-width:520px){.answers{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.ans{min-height:56px;padding:8px 14px;border:1px solid var(--line-strong);border-radius:2px;background:var(--raised);color:var(--ink);text-align:left;font-size:17px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:10px;}
+.ans[disabled]{cursor:default;}
+.ans.gone{opacity:.3;text-decoration:line-through;}
+.ans.right{border:2px solid var(--good);font-weight:700;}
+.ans.right::after{content:'Correct';margin-left:auto;font-size:13px;color:var(--good);}
+.ans.wrong::after{content:'Your answer';margin-left:auto;font-size:13px;color:var(--bad);}
+.ans.wrong{border:2px solid var(--bad);}
+.ans i{width:22px;height:22px;flex:none;display:none;}
+
+.typebox{display:flex;gap:8px;}
+.typebox input{flex:1;min-width:0;height:52px;border:1px solid var(--line-strong);border-radius:2px;background:var(--raised);color:var(--ink);font-size:18px;padding:0 12px;}
+.feedback{display:flex;flex-direction:column;gap:10px;padding:16px;background:var(--raised);border:1px solid var(--line);}
+.fb-title{font-family:var(--serif);font-size:24px;line-height:1.15;}
+.fb-title.good{color:var(--good);} .fb-title.bad{color:var(--bad);}
+.fact{font-size:15px;color:var(--ink-soft);}
+.combo{display:flex;height:36px;}
+.combo span{flex:1;}
+.combo span.me{outline:3px solid var(--ink);outline-offset:-3px;}
+
+/* results */
+.big{font-family:var(--serif);font-size:64px;line-height:1;font-variant-numeric:tabular-nums;}
+.rlist{display:flex;flex-direction:column;}
+.rrow{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:12px;align-items:center;padding-block:8px;border-bottom:1px solid var(--line);}
+.rrow i{width:36px;height:36px;display:block;border:1px solid var(--line);}
+.rrow small{display:block;color:var(--ink-muted);font-size:13px;}
+.pts{font-family:var(--mono);font-size:14px;}
+.row{display:flex;gap:10px;flex-wrap:wrap;}
+.puzzle{font-family:var(--mono);font-size:14px;color:var(--ink-soft);}
+.hint u,.fact u{text-decoration-thickness:2px;text-underline-offset:3px;}
+.enum{font-family:var(--mono);font-size:14px;color:var(--ink-muted);white-space:nowrap;}
+.cryptic{font-family:var(--serif);font-size:20px;line-height:1.4;}
+pre.grid{margin:0;font-size:22px;line-height:1.2;letter-spacing:2px;}
+details{font-size:15px;color:var(--ink-soft);}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:2px;font-size:14px;}
+.foot{font-size:13px;color:var(--ink-muted);border-top:1px solid var(--line);padding-top:12px;}
+.foot a{color:var(--ink-soft);}
+</style>
+
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
+.appbar{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.brand{display:flex;gap:4px;text-decoration:none;padding:8px 0;}
+.brand .dot{width:18px;height:18px;display:block;}
+.appnav{display:flex;align-items:center;gap:8px;}
+.link{background:none;border:0;color:var(--ink);font-weight:700;font-size:15px;min-height:44px;padding:0 8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+.link[disabled]{opacity:.35;cursor:default;}
+.chip{background:var(--raised);border:1px solid var(--line-strong);border-radius:999px;color:var(--ink);font-size:14px;font-weight:700;min-height:36px;padding:0 14px;cursor:pointer;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.namebox{display:flex;flex-direction:column;gap:6px;}
+.small{font-size:14px;}
+.mult{font-family:var(--mono);font-size:14px;font-weight:500;padding:1px 6px;border:1px solid var(--ink-soft);border-radius:2px;margin-left:4px;vertical-align:2px;}
+.played{padding:12px 14px;background:var(--raised);border:1px solid var(--line);font-size:15px;}
+.rank{font-size:17px;padding:12px 14px;background:var(--raised);border:1px solid var(--line);}
+.verdict{font-family:var(--serif);font-size:24px;}
+.bh{font-size:32px;}
+.tabs{display:flex;border-bottom:1px solid var(--line);gap:4px;}
+.tabs button{min-height:44px;padding:0 16px;border:0;border-bottom:3px solid transparent;background:none;color:var(--ink-soft);font-weight:700;font-size:15px;cursor:pointer;}
+.tabs button[aria-selected="true"]{border-bottom-color:var(--ink);color:var(--ink);}
+.daynav{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.table-wrap{overflow-x:auto;}
+table.lb{width:100%;border-collapse:collapse;font-size:15px;}
+.lb th{text-align:left;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);padding:8px 6px;border-bottom:2px solid var(--ink);white-space:nowrap;}
+.lb td{padding:10px 6px;border-bottom:1px solid var(--line);vertical-align:middle;}
+.lb .num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);}
+.lb tr.me td{background:var(--raised);}
+.you{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;background:var(--ink);color:var(--paper);border-radius:2px;margin-left:4px;}
+.mode{font-size:12px;font-weight:700;padding:1px 6px;border:1px solid var(--ink-soft);border-radius:2px;white-space:nowrap;}
+.mode.type{background:var(--ink-soft);color:var(--paper);}
+.mini{font-size:11px;letter-spacing:0;white-space:nowrap;}
+@media (max-width:420px){.lb .mini{display:none}.lb th:last-child{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="appbar">
+    <a href="#" class="brand" id="home" aria-label="Wada you know about colour? Home"><span class="dot" style="background:#bb7125"></span><span class="dot" style="background:#12354e"></span><span class="dot" style="background:#a62c37"></span></a>
+    <div class="appnav">
+      <button type="button" class="link" id="navboard">Leaderboard</button>
+      <button type="button" class="chip" id="whoami" hidden></button>
+    </div>
+  </header>
+
+  <!-- START -->
+  <section id="start" class="hero" aria-label="Start">
+    <div class="strip" id="strip" aria-hidden="true"></div>
+    <p class="puzzle" id="puzzle"></p>
+    <h1><em>Wada</em> you know about colour?</h1>
+    <p style="color:var(--ink-soft)">Ten colours from Sanzo Wada’s <em>Dictionary of Color Combinations</em>. Name each one. Stuck? Each colour has a cryptic crossword clue, and a second hint that shows where the definition is.</p>
+
+    <form id="namebox" class="namebox" autocomplete="off">
+      <label for="name" class="label">Your name on the leaderboard</label>
+      <div class="typebox"><input id="name" maxlength="20" placeholder="e.g. Sam" autocomplete="nickname"><button type="submit" class="btn alt" id="namesave">Save</button></div>
+      <p class="small muted" id="namemsg">Pick a name your friends will recognise. No sign-up needed; this device remembers you.</p>
+    </form>
+
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <span class="label">How do you want to answer?</span>
+      <div class="choice" id="modes">
+        <button type="button" class="opt" data-mode="pick" aria-pressed="true"><b>Pick <span class="mult">×1</span></b><span>Choose from four names. Up to 30 points.</span></button>
+        <button type="button" class="opt" data-mode="type" aria-pressed="false"><b>Type <span class="mult">×2</span></b><span>Type the name. Harder, so double points: up to 60.</span></button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <span class="label">Which round?</span>
+      <div class="choice" id="rounds">
+        <button type="button" class="opt" data-round="daily" aria-pressed="true"><b>Today’s puzzle</b><span>Same ten for everyone. One go, counts on the leaderboard.</span></button>
+        <button type="button" class="opt" data-round="free" aria-pressed="false"><b>Practice</b><span>A random ten. Play as often as you like; not scored.</span></button>
+      </div>
+    </div>
+    <div class="rules">
+      <span>Each colour: 3 points with no hints, 2 with the clue, 1 with both hints, 0 if wrong. Type mode doubles it.</span>
+      <details><summary>How the cryptic clues work</summary><p>Every clue has two parts. The <u>definition</u>, at the start or end, describes the colour. The rest is wordplay that builds the name: anagrams (look for words like <i>twisted</i> or <i>badly</i>), words joined end to end, hidden words, or sound-alikes. Colour words have fixed stand-ins: <b>red</b> is Communist or flushed, <b>blue</b> is down or sad, <b>green</b> is naive or envious, <b>yellow</b> is cowardly or chicken, <b>pink</b> is blushing or in fine fettle, <b>purple</b> is royal. After each answer you see how the clue works.</p></details>
+    </div>
+    <p class="played" id="played" hidden></p>
+    <button type="button" class="btn" id="go">Start</button>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" hidden aria-label="Game" style="display:flex;flex-direction:column;gap:16px;">
+    <div class="top"><div class="pips" id="pips" aria-hidden="true"></div><span class="mono" id="score">0 pts</span></div>
+    <div class="swatch" id="swatch" role="img"><span class="no" id="qno"></span></div>
+    <div class="hints">
+      <div class="hintbtn">
+        <button type="button" class="btn alt" id="h1">Hint 1: cryptic clue</button>
+        <button type="button" class="btn alt" id="h2">Hint 2: definition</button>
+      </div>
+      <p class="hint" id="h1txt" hidden></p>
+      <p class="hint" id="h2txt" hidden></p>
+    </div>
+    <div class="answers" id="answers"></div>
+    <form class="typebox" id="typebox" hidden autocomplete="off">
+      <label for="guess" class="sr">Colour name</label>
+      <input id="guess" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Name this colour">
+      <button type="submit" class="btn">Guess</button>
+    </form>
+    <div class="feedback" id="feedback" hidden aria-live="polite">
+      <p class="fb-title" id="fbtitle"></p>
+      <p class="fact" id="fbclue"></p>
+      <p class="fact" id="fbfact"></p>
+      <div style="display:flex;flex-direction:column;gap:4px;"><span class="label" id="fbcl"></span><div class="combo" id="fbcombo"></div></div>
+      <button type="button" class="btn" id="next">Next colour</button>
+    </div>
+    <button type="button" class="btn alt" id="skip" style="align-self:flex-start">I don’t know</button>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" hidden aria-label="Results" style="display:flex;flex-direction:column;gap:14px;">
+    <span class="label" id="rlabel"></span>
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><span class="big" id="rscore"></span><span class="verdict" id="rverdict"></span></div>
+    <p class="muted" id="rcalc"></p>
+    <p class="rank" id="rrank" hidden></p>
+    <pre class="grid" id="rgrid" aria-label="Your result grid"></pre>
+    <div class="row"><button type="button" class="btn" id="share">Copy my result</button><button type="button" class="btn alt" id="toboard">Leaderboard</button><button type="button" class="btn alt" id="again">Practice round</button></div>
+    <div class="rlist" id="rlist"></div>
+  </section>
+
+  <!-- LEADERBOARD -->
+  <section id="board" hidden aria-label="Leaderboard" style="display:flex;flex-direction:column;gap:14px;">
+    <h2 class="bh">Leaderboard</h2>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" id="t-day" aria-selected="true">Today</button>
+      <button type="button" role="tab" id="t-all" aria-selected="false">All time</button>
+    </div>
+    <div class="daynav" id="daynav"><button type="button" class="link" id="dprev">‹ Previous day</button><span class="mono" id="dlabel"></span><button type="button" class="link" id="dnext">Next day ›</button></div>
+    <p class="muted" id="bmsg"></p>
+    <div class="table-wrap"><table class="lb" id="lb"></table></div>
+    <button type="button" class="btn alt" id="bback" style="align-self:flex-start">Back to the game</button>
+  </section>
+
+  <p class="foot">Colour names and values from <a href="https://github.com/mattdesl/dictionary-of-colour-combinations">Matt DesLauriers’ open dataset</a> of Wada’s dictionary (MIT licence). Names keep the book’s spellings; the usual spelling is accepted too. A new puzzle every day at midnight UK time.</p>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script type="module">
+import * as G from './game.mjs';
+const C=G.COLOURS,K=G.COMBOS,$=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uses=C.map(()=>0);K.forEach(k=>k.forEach(i=>uses[i]++));
+const PUZZLE=G.puzzleNumber();
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+// player identity
+let me=store.get('wada-player',null);
+if(!me||!me.id){me={id:(crypto.randomUUID?crypto.randomUUID():Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join('')),name:''};store.set('wada-player',me);}
+function renderWho(){const w=$('whoami');w.hidden=!me.name;w.textContent=me.name?me.name:'';$('name').value=me.name||'';}
+$('namebox').addEventListener('submit',e=>{e.preventDefault();const n=$('name').value.replace(/[<>"'&`]/g,'').replace(/\s+/g,' ').trim().slice(0,20);
+  if(n.length<2){$('namemsg').textContent='Use at least 2 characters.';return;}me.name=n;store.set('wada-player',me);renderWho();$('namemsg').textContent=`Saved. You’re playing as ${n}.`;});
+$('whoami').onclick=()=>{show('start');$('name').focus();};
+
+// start screen
+let mode='pick',roundType='daily';
+$('strip').innerHTML=[13,28,158,99,38,126,149,54,65,87].map(i=>`<span style="background:${C[i][1]}"></span>`).join('');
+function segSel(id,attr,set){document.querySelectorAll('#'+id+' .opt').forEach(b=>b.onclick=()=>{document.querySelectorAll('#'+id+' .opt').forEach(x=>x.setAttribute('aria-pressed',x===b));set(b.dataset[attr]);renderStart();});}
+segSel('modes','mode',v=>mode=v);segSel('rounds','round',v=>roundType=v);
+function playedToday(){return store.get('wada-played-'+PUZZLE,null);}
+function renderStart(){
+  const today=new Date();const st=store.get('wada-streak',{n:0,last:null});const streak=st.last>=PUZZLE-1?st.n:0;
+  $('puzzle').textContent=`Puzzle No. ${PUZZLE} · ${today.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}${streak?' · Streak: '+streak+' day'+(streak===1?'':'s'):''}`;
+  const p=playedToday(),pl=$('played'),go=$('go');
+  if(roundType==='daily'&&p){pl.hidden=false;pl.textContent=`You’ve played today’s puzzle: ${p.points} points (${p.mode==='type'?'Type ×2':'Pick'}). Come back tomorrow, or try a practice round.`;go.textContent='See the leaderboard';}
+  else{pl.hidden=true;go.textContent=roundType==='daily'?'Start today’s puzzle':'Start practice';}
+}
+$('go').onclick=()=>{
+  if(roundType==='daily'&&playedToday()){openBoard('day',PUZZLE);return;}
+  if(roundType==='daily'&&!me.name){$('namemsg').textContent='Add your name first so your score can go on the leaderboard.';$('name').focus();return;}
+  start();
+};
+
+// game
+let Q=[],qi=0,score=0,results=[],answers=[],hintsUsed=0,answered=false,opts=[],practiceSeed=0;
+function show(s){['start','game','results','board'].forEach(x=>$(x).hidden=x!==s);window.scrollTo({top:0});if(s==='start')renderStart();}
+function start(){
+  practiceSeed=Math.floor(Math.random()*2e9)+1;
+  Q=roundType==='daily'?G.dailyQuestions(PUZZLE):G.pickTen(G.mkRng(practiceSeed));
+  qi=0;score=0;results=[];answers=[];show('game');ask();
+}
+const mult=()=>G.MULTIPLIER[mode];
+function crypticText(i,underline){const c=G.clueOf(i);const t=esc(c[0]).replace(/\[(.+?)\]/g,(m,a)=>underline?'<u>'+a+'</u>':a);return `<span class="cryptic">${t}</span> <span class="enum">${G.enumOf(i)}</span>`;}
+function renderPips(){$('pips').innerHTML=Q.map((_,j)=>`<i class="${j<results.length?'p'+results[j].pts:j===qi?'now':''}"></i>`).join('');$('score').textContent=(score*mult())+' pts';}
+function ask(){
+  const i=Q[qi];answered=false;hintsUsed=0;
+  $('swatch').style.background=C[i][1];$('swatch').setAttribute('aria-label','Colour '+(qi+1)+' of 10');$('qno').textContent=`${qi+1} / 10`;
+  $('h1').disabled=false;$('h2').disabled=true;$('h1txt').hidden=true;$('h2txt').hidden=true;$('feedback').hidden=true;$('skip').hidden=false;
+  $('h1txt').innerHTML=crypticText(i,false);
+  if(mode==='pick'){
+    opts=G.optionsFor(i,(roundType==='daily'?PUZZLE:practiceSeed)*100+qi);
+    $('answers').hidden=false;$('typebox').hidden=true;
+    $('answers').innerHTML=opts.map(j=>`<button type="button" class="ans" data-j="${j}"><span>${esc(G.display(C[j][0]))}</span></button>`).join('');
+    $('answers').querySelectorAll('.ans').forEach(b=>b.onclick=()=>finish(+b.dataset.j===i,+b.dataset.j,null));
+    $('h2txt').innerHTML=crypticText(i,true)+'<br><span class="small">The definition is underlined, and two wrong names are crossed out.</span>';
+  }else{
+    $('answers').hidden=true;$('typebox').hidden=false;$('guess').value='';$('guess').disabled=false;
+    $('h2txt').innerHTML=crypticText(i,true)+`<br><span class="letters">${esc(G.letters(i))}</span>`;
+    setTimeout(()=>$('guess').focus({preventScroll:true}),50);
+  }
+  renderPips();
+}
+$('h1').onclick=()=>{if(answered)return;hintsUsed=1;$('h1txt').hidden=false;$('h1').disabled=true;$('h2').disabled=false;};
+$('h2').onclick=()=>{if(answered)return;hintsUsed=2;$('h1txt').hidden=true;$('h2txt').hidden=false;$('h2').disabled=true;
+  if(mode==='pick'){const i=Q[qi];let n=0;$('answers').querySelectorAll('.ans').forEach(b=>{if(n<2&&+b.dataset.j!==i&&!b.disabled){b.classList.add('gone');b.disabled=true;n++;}});}};
+$('typebox').addEventListener('submit',e=>{e.preventDefault();const g=$('guess').value.trim();if(!g)return;finish(G.isRightTyped(g,Q[qi]),null,g);});
+$('skip').onclick=()=>finish(false,null,'');
+function finish(ok,picked,typed){
+  if(answered)return;answered=true;const i=Q[qi];const pts=G.basePoints(ok,hintsUsed);score+=pts;
+  results.push({i,pts,ans:picked!=null?G.display(C[picked][0]):(typed||'')});
+  answers.push({answer:mode==='pick'?(picked!=null?picked:-1):(typed||''),hints:hintsUsed});
+  if(mode==='pick')$('answers').querySelectorAll('.ans').forEach(b=>{b.disabled=true;const j=+b.dataset.j;if(j===i)b.classList.add('right');else if(j===picked)b.classList.add('wrong');});
+  else $('guess').disabled=true;
+  $('h1').disabled=true;$('h2').disabled=true;$('skip').hidden=true;
+  const t=$('fbtitle');t.className='fb-title '+(ok?'good':'bad');
+  t.textContent=ok?`Yes, ${G.display(C[i][0])}. ${pts*mult()} point${pts*mult()===1?'':'s'}.`:`It’s ${G.display(C[i][0])}.`;
+  $('fbclue').innerHTML=crypticText(i,true)+`<br><b>How it works:</b> ${esc(G.clueOf(i)[1])}`;
+  $('fbfact').textContent=`${C[i][1]} · Wada used it in ${uses[i]} combination${uses[i]===1?'':'s'}.`;
+  const combo=K.findIndex(k=>k.includes(i));
+  $('fbcl').textContent=`Combination ${combo+1}`;
+  $('fbcombo').innerHTML=K[combo].map(j=>`<span class="${j===i?'me':''}" style="background:${C[j][1]}" title="${esc(G.display(C[j][0]))}"></span>`).join('');
+  $('next').textContent=qi===9?'See my score':'Next colour';
+  $('feedback').hidden=false;renderPips();
+  setTimeout(()=>$('feedback').scrollIntoView({behavior:'smooth',block:'nearest'}),30);
+}
+$('next').onclick=()=>{qi++;if(qi<10)ask();else end();};
+
+async function end(){
+  show('results');
+  const pts=score*mult(),max=30*mult(),marks=results.map(r=>r.pts);
+  $('rlabel').textContent=(roundType==='daily'?'Puzzle No. '+PUZZLE:'Practice round')+' · '+(mode==='pick'?'Pick':'Type ×2');
+  $('rscore').textContent=`${pts}`;
+  $('rcalc').textContent=mode==='type'?`${score} of 30, doubled for typing. Out of ${max}.`:`Out of ${max}. Type mode would have doubled it.`;
+  const r=score/30;$('rverdict').textContent=r>=.9?'Wada would be proud.':r>=.67?'A true colourist.':r>=.4?'A good eye.':r>=.2?'Getting there.':'Plenty to discover.';
+  $('rgrid').textContent=G.gridText(marks);
+  $('rlist').innerHTML=results.map(x=>`<div class="rrow"><i style="background:${C[x.i][1]}"></i><span><b>${esc(G.display(C[x.i][0]))}</b><small>${x.pts?(x.pts===3?'No hints':x.pts===2?'Used the clue':'Used both hints'):(x.ans?'You said “'+esc(x.ans)+'”':'Skipped')}</small></span><span class="pts">${x.pts*mult()}</span></div>`).join('');
+  const rk=$('rrank');rk.hidden=true;
+  if(roundType!=='daily')return;
+  const local={points:pts,mode,marks};store.set('wada-played-'+PUZZLE,local);
+  const st=store.get('wada-streak',{n:0,last:null});if(st.last!==PUZZLE){st.n=st.last===PUZZLE-1?st.n+1:1;st.last=PUZZLE;store.set('wada-streak',st);}
+  rk.hidden=false;rk.textContent='Sending your score…';
+  try{
+    const res=await fetch('/api/submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({playerId:me.id,name:me.name,puzzle:PUZZLE,mode,answers})});
+    const data=await res.json();
+    if(res.ok){rk.innerHTML=`You’re <b>${ordinal(data.rank)}</b> of ${data.of} today. All-time total: ${data.player.total} points over ${data.player.played} day${data.player.played===1?'':'s'}.`;}
+    else if(res.status===409){rk.textContent=`You’d already played today, so your first score (${data.entry?data.entry.points:'?'} points) stands.`;}
+    else rk.textContent=data.error||'Your score couldn’t be saved.';
+  }catch(e){rk.textContent='Couldn’t reach the leaderboard. Your score is kept on this device.';}
+}
+const ordinal=n=>n+(n%100>=11&&n%100<=13?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th'));
+$('again').onclick=()=>{roundType='free';document.querySelectorAll('#rounds .opt').forEach(x=>x.setAttribute('aria-pressed',x.dataset.round==='free'));show('start');};
+$('toboard').onclick=()=>openBoard('day',PUZZLE);
+const toast=$('toast');let tt;
+$('share').onclick=()=>{
+  const text=`Wada you know about colour? ${roundType==='daily'?'No. '+PUZZLE:'Practice'} · ${mode==='pick'?'Pick':'Type ×2'} · ${score*mult()}/${30*mult()}\n${G.gridText(results.map(r=>r.pts))}\n${location.origin}`;
+  const done=t=>{toast.textContent=t;toast.hidden=false;clearTimeout(tt);tt=setTimeout(()=>toast.hidden=true,1800);};
+  try{navigator.clipboard.writeText(text).then(()=>done('Result copied'),()=>done(text));}catch(e){done(text);}
+};
+
+// leaderboard
+let bScope='day',bPuzzle=PUZZLE;
+function setTab(s){bScope=s;$('t-day').setAttribute('aria-selected',s==='day');$('t-all').setAttribute('aria-selected',s==='all');$('daynav').hidden=s!=='day';}
+$('t-day').onclick=()=>{setTab('day');loadBoard();};$('t-all').onclick=()=>{setTab('all');loadBoard();};
+$('dprev').onclick=()=>{if(bPuzzle>1){bPuzzle--;loadBoard();}};$('dnext').onclick=()=>{if(bPuzzle<PUZZLE){bPuzzle++;loadBoard();}};
+function openBoard(scope,puzzle){bPuzzle=puzzle||PUZZLE;setTab(scope);show('board');loadBoard();}
+$('navboard').onclick=()=>openBoard('day',PUZZLE);$('bback').onclick=()=>show('start');$('home').onclick=e=>{e.preventDefault();show('start');};
+async function loadBoard(){
+  const lb=$('lb'),msg=$('bmsg');lb.innerHTML='';msg.textContent='Loading…';
+  $('dlabel').textContent=`Puzzle No. ${bPuzzle}${bPuzzle===PUZZLE?' (today)':''}`;$('dprev').disabled=bPuzzle<=1;$('dnext').disabled=bPuzzle>=PUZZLE;
+  try{
+    const res=await fetch(`/api/leaderboard?scope=${bScope}&puzzle=${bPuzzle}&me=${encodeURIComponent(me.id)}`);const d=await res.json();
+    if(!res.ok)throw new Error(d.error||'error');
+    if(!d.rows.length){msg.textContent=bScope==='day'?'Nobody has played this puzzle yet.':'No scores yet. Be the first.';return;}
+    msg.textContent=bScope==='day'?`${d.players} player${d.players===1?'':'s'}. Type scores count double.`:`${d.players} player${d.players===1?'':'s'}. Total of all daily scores.`;
+    if(bScope==='day'){
+      lb.innerHTML=`<thead><tr><th>#</th><th>Name</th><th>Mode</th><th class="num">Points</th><th>Round</th></tr></thead><tbody>`+d.rows.map(r=>`<tr class="${r.me?'me':''}"><td class="num">${r.rank}</td><td>${esc(r.name)}${r.me?' <span class="you">you</span>':''}</td><td><span class="mode ${r.mode}">${r.mode==='type'?'Type ×2':'Pick'}</span></td><td class="num"><b>${r.points}</b></td><td class="mini">${G.gridText(r.marks).replace('\n','')}</td></tr>`).join('')+'</tbody>';
+    }else{
+      lb.innerHTML=`<thead><tr><th>#</th><th>Name</th><th class="num">Total</th><th class="num">Days</th><th class="num">Average</th><th class="num">Streak</th></tr></thead><tbody>`+d.rows.map(r=>`<tr class="${r.me?'me':''}"><td class="num">${r.rank}</td><td>${esc(r.name)}${r.me?' <span class="you">you</span>':''}</td><td class="num"><b>${r.total}</b></td><td class="num">${r.played}</td><td class="num">${r.average}</td><td class="num">${r.streak||'–'}</td></tr>`).join('')+'</tbody>';
+    }
+    if(d.mine&&d.mine.rank>50)msg.textContent+=` You’re ${ordinal(d.mine.rank)}.`;
+  }catch(e){msg.textContent='The leaderboard couldn’t be loaded. Check your connection and try again.';}
+}
+renderWho();renderStart();
+</script>
+
+</body>
+</html>
