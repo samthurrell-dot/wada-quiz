@@ -174,15 +174,15 @@ table.lb{width:100%;border-collapse:collapse;font-size:15px;}
     <div style="display:flex;flex-direction:column;gap:8px;">
       <span class="label">How do you want to answer?</span>
       <div class="choice" id="modes">
-        <button type="button" class="opt" data-mode="pick" aria-pressed="true"><b>Pick <span class="mult">×1</span></b><span>Choose from four names. A good place to start. Up to 60 points.</span></button>
-        <button type="button" class="opt" data-mode="type" aria-pressed="false"><b>Type <span class="mult">×2</span></b><span>Name it from memory. Harder, so every point counts double: up to 120.</span></button>
+        <button type="button" class="opt" data-mode="pick" aria-pressed="true"><b>Pick <span class="mult">×1</span></b><span>Choose the right name from four options. It’s a good place to start, and you can score up to 60 points.</span></button>
+        <button type="button" class="opt" data-mode="type" aria-pressed="false"><b>Type <span class="mult">×2</span></b><span>Hard mode: if you can name each colour from memory, you’ll earn double the points you would for picking, up to 120.</span></button>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:8px;">
       <span class="label">Which round?</span>
       <div class="choice" id="rounds">
-        <button type="button" class="opt" data-round="daily" aria-pressed="true"><b>Today’s puzzle</b><span>The same ten colours for everyone. One go, and it counts towards the leaderboard.</span></button>
-        <button type="button" class="opt" data-round="free" aria-pressed="false"><b>Practice</b><span>Ten colours picked at random. Play as often as you like, just for fun.</span></button>
+        <button type="button" class="opt" data-round="daily" aria-pressed="true"><b>Today’s puzzle</b><span>Everyone gets the same ten colours each day. You have one go, and your score goes on the leaderboard.</span></button>
+        <button type="button" class="opt" data-round="free" aria-pressed="false"><b>Practice</b><span>Try ten colours picked at random. You can play as often as you like, and nothing is scored.</span></button>
       </div>
     </div>
     <div class="rules">
@@ -368,7 +368,7 @@ async function end(){
   const pts=score,max=G.MAX_BASE*mult(),marks=results.map(r=>r.pts);
   $('rlabel').textContent=(roundType==='daily'?'Puzzle No. '+PUZZLE:'Practice round')+' · '+(mode==='pick'?'Pick':'Type ×2');
   $('rscore').textContent=`${pts}`;
-  $('rcalc').textContent=mode==='type'?`${score/2} out of ${G.MAX_BASE}, doubled for typing: ${score} out of ${max}.`:`Out of a possible ${max}. Fancy more of a challenge? Type mode doubles your points.`;
+  $('rcalc').textContent=mode==='type'?`You scored ${score/2} out of ${G.MAX_BASE}, doubled to ${score} for typing, out of a possible ${max}.`:`That’s out of a possible ${max}. Fancy more of a challenge? Type mode doubles your points.`;
   const r=score/max;$('rverdict').textContent=r>=.9?'Wada himself would be proud.':r>=.67?'A true colourist.':r>=.4?'A good eye for colour.':r>=.2?'Getting to know the palette.':'Plenty more colours to meet.';
   $('rgrid').textContent=G.gridText(marks);
   $('rlist').innerHTML=results.map(x=>`<div class="rrow"><i style="background:${C[x.i][1]}"></i><span><b>${esc(G.display(C[x.i][0]))}</b><small>${x.pts?(x.pts===3?'Named it unaided':x.pts===2?'Used the clue':'Used both hints'):(x.ans?'You said “'+esc(x.ans)+'”':'Skipped')}</small></span><span class="pts">${G.pointsFor(mode,x.pts)}</span></div>`).join('');
@@ -409,7 +409,7 @@ async function loadBoard(){
     const res=await fetch(`/api/leaderboard?scope=${bScope}&puzzle=${bPuzzle}&me=${encodeURIComponent(me.id)}`);const d=await res.json();
     if(!res.ok)throw new Error(d.error||'error');
     if(!d.rows.length){msg.textContent=bScope==='day'?'Nobody has played this puzzle yet. Why not be the first?':'No scores yet. Why not be the first?';return;}
-    msg.textContent=bScope==='day'?`${d.players} player${d.players===1?'':'s'}. Type scores count double.`:`${d.players} player${d.players===1?'':'s'} so far. Every daily score, added together.`;
+    msg.textContent=bScope==='day'?`${d.players===1?'1 person has':d.players+' people have'} played this puzzle. Type-mode scores count double.`:`${d.players===1?'1 person has':d.players+' people have'} played so far. This table adds up every daily score.`;
     if(bScope==='day'){
       lb.innerHTML=`<thead><tr><th>#</th><th>Name</th><th>Mode</th><th class="num">Points</th><th>Round</th></tr></thead><tbody>`+d.rows.map(r=>`<tr class="${r.me?'me':''}"><td class="num">${r.rank}</td><td>${esc(r.name)}${r.me?' <span class="you">you</span>':''}</td><td><span class="mode ${r.mode}">${r.mode==='type'?'Type ×2':'Pick'}</span></td><td class="num"><b>${r.points}</b></td><td class="mini">${G.gridText(r.marks).replace('\n','')}</td></tr>`).join('')+'</tbody>';
     }else{
