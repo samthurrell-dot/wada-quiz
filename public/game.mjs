@@ -637,7 +637,16 @@ export const CRYPTIC = {
 export const LAUNCH_UTC = Date.UTC(2026, 8, 28); // Puzzle No. 1 = 28 September 2026 (UK date)
 export const QUESTIONS = 10;
 export const MULTIPLIER = { pick: 1, type: 2 }; // typing is harder, so it scores double
-export const basePoints = (correct, hints) => (correct ? 3 - Math.max(0, Math.min(2, hints)) : 0);
+// Each answer has an outcome code: 3 = right with no hints, 2 = right with the clue, 1 = right with both hints, 0 = wrong.
+// Codes are what rounds store (and what the coloured squares show); points come from this table,
+// so the scoring can change and every stored round is re-scored the same way.
+// Unhinted answers are worth three times a clued one: with four options, a clue makes the answer nearly certain.
+export const POINTS = [0, 1, 2, 6];
+export const MAX_BASE = 60; // 10 colours × 6
+export const outcome = (correct, hints) => (correct ? 3 - Math.max(0, Math.min(2, hints)) : 0);
+export const basePoints = outcome; // kept for older code: returns the outcome code
+export const pointsFor = (mode, code) => (POINTS[code] || 0) * (MULTIPLIER[mode] || 1);
+export const roundPoints = (mode, marks) => (marks || []).reduce((s, c) => s + pointsFor(mode, c), 0);
 
 const ALIAS = {'sulpheryellow':['sulphuryellow','sulfuryellow'],'freshcolor':['fleshcolor'],'rosolancpurple':['rosolanepurple'],'pomegranitepurple':['pomegranatepurple'],'vistorislake':['victorialake'],'krongbergsgreen':['kronbergsgreen'],'artemesiagreen':['artemisiagreen'],'cerulianblue':['ceruleanblue'],'antwarpblue':['antwerpblue'],'vandarpoelsblue':['vanderpoelsblue'],'veroniapurple':['vernoniapurple'],'ochrered':['ocherred'],'isabellacolor':['isabella'],'deepvioletplumbeous':['deepviolet','plumbeous'],'yellowocher':['yellowochre'],'oliveocher':['oliveochre']};
 
@@ -685,7 +694,7 @@ export function scoreRound(questions, mode, answers) {
   questions.forEach((i, q) => {
     const a = answers[q] || {}, hints = Math.max(0, Math.min(2, a.hints | 0));
     const right = mode === 'pick' ? Number(a.answer) === i : isRightTyped(a.answer || '', i);
-    const pts = basePoints(right, hints); base += pts; marks.push(pts);
+    const code = outcome(right, hints); base += POINTS[code]; marks.push(code);
   });
   return { base, points: base * MULTIPLIER[mode], marks };
 }

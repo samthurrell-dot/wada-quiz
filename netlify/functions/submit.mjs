@@ -2,6 +2,7 @@
 // The page sends its answers; the score is worked out here, so it can't be faked by editing the page.
 import { getStore } from "@netlify/blobs";
 import { dailyQuestions, puzzleNumber, scoreRound, QUESTIONS } from "../../public/game.mjs";
+import { allRounds, totals, pointsOf } from "../lib/scores.mjs";
 
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
@@ -34,27 +35,21 @@ export default async (req) => {
   const write = await store.setJSON(dayKey, entry, { onlyIfNew: true });
   if (write && write.modified === false) {
     const existing = await store.get(dayKey, { type: "json" });
+    if (existing) existing.points = pointsOf(existing);
     return json({ error: "You've already played today's puzzle.", entry: existing, puzzle }, 409);
   }
 
-  // running totals for the all-time table
+  // keep the player's name up to date (totals are worked out from their rounds, see netlify/lib/scores.mjs)
   const pKey = `player/${playerId}`;
-  const p = (await store.get(pKey, { type: "json" })) || { total: 0, played: 0, best: 0, streak: 0, bestStreak: 0, last: null };
-  p.name = nm;
-  p.total += result.points;
-  p.played += 1;
-  p.best = Math.max(p.best, result.points);
-  p.streak = p.last === puzzle - 1 ? p.streak + 1 : p.last === puzzle ? p.streak : 1;
-  p.bestStreak = Math.max(p.bestStreak || 0, p.streak);
-  p.last = Math.max(p.last || 0, puzzle);
-  await store.setJSON(pKey, p);
+  const prev = (await store.get(pKey, { type: "json" })) || {};
+  await store.setJSON(pKey, { ...prev, name: nm, last: Math.max(prev.last || 0, puzzle) });
 
-  // rank for today
-  const { blobs } = await store.list({ prefix: `day/${puzzle}/` });
-  const all = await Promise.all(blobs.slice(0, 1000).map((b) => store.get(b.key, { type: "json" })));
-  const better = all.filter((e) => e && (e.points > entry.points || (e.points === entry.points && e.at < entry.at))).length;
+  const rounds = await allRounds(store);
+  const todays = rounds.filter((r) => r.puzzle === puzzle).map((r) => r.entry);
+  const better = todays.filter((e) => e.points > entry.points || (e.points === entry.points && e.at < entry.at)).length;
+  const p = totals(rounds, today).find((x) => x.id === playerId) || { name: nm, total: entry.points, played: 1, streak: 1 };
 
-  return json({ entry, puzzle, rank: better + 1, of: all.filter(Boolean).length, player: { name: p.name, total: p.total, played: p.played, streak: p.streak } });
+  return json({ entry, puzzle, rank: better + 1, of: todays.length, player: { name: p.name, total: p.total, played: p.played, streak: p.streak } });
 };
 
 export const config = { path: "/api/submit" };

@@ -10,6 +10,7 @@ A daily colour puzzle. Name ten of Sanzo Wada's colours from cryptic clues; scor
 | `public/game.mjs` | Colours, clues, daily puzzle selection and scoring. Used by the page **and** the server, so both always agree |
 | `netlify/functions/submit.mjs` | Receives a finished daily round, **works out the score itself**, and saves it (`/api/submit`) |
 | `netlify/functions/leaderboard.mjs` | Today's table and the all-time table (`/api/leaderboard`) |
+| `netlify/lib/scores.mjs` | Works out points and all-time totals from the stored rounds |
 | `netlify.toml` | Tells Netlify where the page and functions are |
 | `package.json` | One dependency: `@netlify/blobs`, Netlify's built-in storage |
 
@@ -40,8 +41,10 @@ Answer the questions to create a new project. The CLI prints your site's address
 
 ## How scoring works
 
-- Each colour: 3 points with no hints, 2 with the cryptic clue, 1 with both hints, 0 if wrong.
-- **Type mode doubles the score** (up to 60). Pick mode is up to 30. The multiplier lives in `MULTIPLIER` in `public/game.mjs` if you want to change it.
+- Each colour: 6 points with no hints, 2 with the cryptic clue, 1 with both hints, 0 if wrong. With four names to choose from, a clue makes the answer nearly certain, so hints cost a lot.
+- In pick mode the hints don't show the word count, since that would often give the answer away.
+- **Type mode doubles the score** (up to 120). Pick mode is up to 60. The points live in `POINTS` and the multiplier in `MULTIPLIER` in `public/game.mjs`.
+- Every round stores what happened on each colour (no hints, clue, both hints, wrong), and the leaderboard works out points from that each time it loads. So if you change `POINTS`, all past rounds are re-scored the same way.
 - Only **Today's puzzle** counts. Each player gets one go per day; a second attempt is refused by the server.
 - A new puzzle starts at midnight UK time. Puzzle No. 1 is 28 September 2026.
 - The all-time table ranks by total points, and also shows days played, average and current streak.

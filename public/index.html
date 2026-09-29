@@ -167,8 +167,8 @@ table.lb{width:100%;border-collapse:collapse;font-size:15px;}
     <div style="display:flex;flex-direction:column;gap:8px;">
       <span class="label">How do you want to answer?</span>
       <div class="choice" id="modes">
-        <button type="button" class="opt" data-mode="pick" aria-pressed="true"><b>Pick <span class="mult">×1</span></b><span>Choose from four names. Up to 30 points.</span></button>
-        <button type="button" class="opt" data-mode="type" aria-pressed="false"><b>Type <span class="mult">×2</span></b><span>Type the name. Harder, so double points: up to 60.</span></button>
+        <button type="button" class="opt" data-mode="pick" aria-pressed="true"><b>Pick <span class="mult">×1</span></b><span>Choose from four names. Up to 60 points.</span></button>
+        <button type="button" class="opt" data-mode="type" aria-pressed="false"><b>Type <span class="mult">×2</span></b><span>Type the name. Harder, so double points: up to 120.</span></button>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:8px;">
@@ -179,7 +179,7 @@ table.lb{width:100%;border-collapse:collapse;font-size:15px;}
       </div>
     </div>
     <div class="rules">
-      <span>Each colour: 3 points with no hints, 2 with the clue, 1 with both hints, 0 if wrong. Type mode doubles it.</span>
+      <span>Each colour: 6 points with no hints, 2 with the clue, 1 with both hints, 0 if wrong. Type mode doubles it. Hints make it much easier, so they cost a lot.</span>
       <details><summary>How the cryptic clues work</summary><p>Every clue has two parts. The <u>definition</u>, at the start or end, describes the colour. The rest is wordplay that builds the name: anagrams (look for words like <i>twisted</i> or <i>badly</i>), words joined end to end, hidden words, or sound-alikes. Colour words have fixed stand-ins: <b>red</b> is Communist or flushed, <b>blue</b> is down or sad, <b>green</b> is naive or envious, <b>yellow</b> is cowardly or chicken, <b>pink</b> is blushing or in fine fettle, <b>purple</b> is royal. After each answer you see how the clue works.</p></details>
     </div>
     <p class="played" id="played" hidden></p>
@@ -268,7 +268,7 @@ function renderStart(){
   const today=new Date();const st=store.get('wada-streak',{n:0,last:null});const streak=st.last>=PUZZLE-1?st.n:0;
   $('puzzle').textContent=`Puzzle No. ${PUZZLE} · ${today.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}${streak?' · Streak: '+streak+' day'+(streak===1?'':'s'):''}`;
   const p=playedToday(),pl=$('played'),go=$('go');
-  if(roundType==='daily'&&p){pl.hidden=false;pl.textContent=`You’ve played today’s puzzle: ${p.points} points (${p.mode==='type'?'Type ×2':'Pick'}). Come back tomorrow, or try a practice round.`;go.textContent='See the leaderboard';}
+  if(roundType==='daily'&&p){pl.hidden=false;pl.textContent=`You’ve played today’s puzzle: ${p.marks?G.roundPoints(p.mode,p.marks):p.points} points (${p.mode==='type'?'Type ×2':'Pick'}). Come back tomorrow, or try a practice round.`;go.textContent='See the leaderboard';}
   else{pl.hidden=true;go.textContent=roundType==='daily'?'Start today’s puzzle':'Start practice';}
 }
 $('go').onclick=()=>{
@@ -286,19 +286,20 @@ function start(){
   qi=0;score=0;results=[];answers=[];show('game');ask();
 }
 const mult=()=>G.MULTIPLIER[mode];
-function crypticText(i,underline){const c=G.clueOf(i);const t=esc(c[0]).replace(/\[(.+?)\]/g,(m,a)=>underline?'<u>'+a+'</u>':a);return `<span class="cryptic">${t}</span> <span class="enum">${G.enumOf(i)}</span>`;}
-function renderPips(){$('pips').innerHTML=Q.map((_,j)=>`<i class="${j<results.length?'p'+results[j].pts:j===qi?'now':''}"></i>`).join('');$('score').textContent=(score*mult())+' pts';}
+// In pick mode the word count is left off the hints: with four names to choose from, it would give the answer away.
+function crypticText(i,underline,noEnum){const c=G.clueOf(i);const t=esc(c[0]).replace(/\[(.+?)\]/g,(m,a)=>underline?'<u>'+a+'</u>':a);return `<span class="cryptic">${t}</span>`+(noEnum?'':` <span class="enum">${G.enumOf(i)}</span>`);}
+function renderPips(){$('pips').innerHTML=Q.map((_,j)=>`<i class="${j<results.length?'p'+results[j].pts:j===qi?'now':''}"></i>`).join('');$('score').textContent=score+' pts';}
 function ask(){
   const i=Q[qi];answered=false;hintsUsed=0;
   $('swatch').style.background=C[i][1];$('swatch').setAttribute('aria-label','Colour '+(qi+1)+' of 10');$('qno').textContent=`${qi+1} / 10`;
   $('h1').disabled=false;$('h2').disabled=true;$('h1txt').hidden=true;$('h2txt').hidden=true;$('feedback').hidden=true;$('skip').hidden=false;
-  $('h1txt').innerHTML=crypticText(i,false);
+  $('h1txt').innerHTML=crypticText(i,false,mode==='pick');
   if(mode==='pick'){
     opts=G.optionsFor(i,(roundType==='daily'?PUZZLE:practiceSeed)*100+qi);
     $('answers').hidden=false;$('typebox').hidden=true;
     $('answers').innerHTML=opts.map(j=>`<button type="button" class="ans" data-j="${j}"><span>${esc(G.display(C[j][0]))}</span></button>`).join('');
     $('answers').querySelectorAll('.ans').forEach(b=>b.onclick=()=>finish(+b.dataset.j===i,+b.dataset.j,null));
-    $('h2txt').innerHTML=crypticText(i,true)+'<br><span class="small">The definition is underlined, and two wrong names are crossed out.</span>';
+    $('h2txt').innerHTML=crypticText(i,true,true)+'<br><span class="small">The definition is underlined, and two wrong names are crossed out.</span>';
   }else{
     $('answers').hidden=true;$('typebox').hidden=false;$('guess').value='';$('guess').disabled=false;
     $('h2txt').innerHTML=crypticText(i,true)+`<br><span class="letters">${esc(G.letters(i))}</span>`;
@@ -312,14 +313,14 @@ $('h2').onclick=()=>{if(answered)return;hintsUsed=2;$('h1txt').hidden=true;$('h2
 $('typebox').addEventListener('submit',e=>{e.preventDefault();const g=$('guess').value.trim();if(!g)return;finish(G.isRightTyped(g,Q[qi]),null,g);});
 $('skip').onclick=()=>finish(false,null,'');
 function finish(ok,picked,typed){
-  if(answered)return;answered=true;const i=Q[qi];const pts=G.basePoints(ok,hintsUsed);score+=pts;
+  if(answered)return;answered=true;const i=Q[qi];const pts=G.outcome(ok,hintsUsed);score+=G.pointsFor(mode,pts);
   results.push({i,pts,ans:picked!=null?G.display(C[picked][0]):(typed||'')});
   answers.push({answer:mode==='pick'?(picked!=null?picked:-1):(typed||''),hints:hintsUsed});
   if(mode==='pick')$('answers').querySelectorAll('.ans').forEach(b=>{b.disabled=true;const j=+b.dataset.j;if(j===i)b.classList.add('right');else if(j===picked)b.classList.add('wrong');});
   else $('guess').disabled=true;
   $('h1').disabled=true;$('h2').disabled=true;$('skip').hidden=true;
   const t=$('fbtitle');t.className='fb-title '+(ok?'good':'bad');
-  t.textContent=ok?`Yes, ${G.display(C[i][0])}. ${pts*mult()} point${pts*mult()===1?'':'s'}.`:`It’s ${G.display(C[i][0])}.`;
+  t.textContent=ok?`Yes, ${G.display(C[i][0])}. ${G.pointsFor(mode,pts)} point${G.pointsFor(mode,pts)===1?'':'s'}.`:`It’s ${G.display(C[i][0])}.`;
   $('fbclue').innerHTML=crypticText(i,true)+`<br><b>How it works:</b> ${esc(G.clueOf(i)[1])}`;
   $('fbfact').textContent=`${C[i][1]} · Wada used it in ${uses[i]} combination${uses[i]===1?'':'s'}.`;
   const combo=K.findIndex(k=>k.includes(i));
@@ -333,13 +334,13 @@ $('next').onclick=()=>{qi++;if(qi<10)ask();else end();};
 
 async function end(){
   show('results');
-  const pts=score*mult(),max=30*mult(),marks=results.map(r=>r.pts);
+  const pts=score,max=G.MAX_BASE*mult(),marks=results.map(r=>r.pts);
   $('rlabel').textContent=(roundType==='daily'?'Puzzle No. '+PUZZLE:'Practice round')+' · '+(mode==='pick'?'Pick':'Type ×2');
   $('rscore').textContent=`${pts}`;
-  $('rcalc').textContent=mode==='type'?`${score} of 30, doubled for typing. Out of ${max}.`:`Out of ${max}. Type mode would have doubled it.`;
-  const r=score/30;$('rverdict').textContent=r>=.9?'Wada would be proud.':r>=.67?'A true colourist.':r>=.4?'A good eye.':r>=.2?'Getting there.':'Plenty to discover.';
+  $('rcalc').textContent=mode==='type'?`${score/2} of ${G.MAX_BASE}, doubled for typing. Out of ${max}.`:`Out of ${max}. Type mode would have doubled it.`;
+  const r=score/max;$('rverdict').textContent=r>=.9?'Wada would be proud.':r>=.67?'A true colourist.':r>=.4?'A good eye.':r>=.2?'Getting there.':'Plenty to discover.';
   $('rgrid').textContent=G.gridText(marks);
-  $('rlist').innerHTML=results.map(x=>`<div class="rrow"><i style="background:${C[x.i][1]}"></i><span><b>${esc(G.display(C[x.i][0]))}</b><small>${x.pts?(x.pts===3?'No hints':x.pts===2?'Used the clue':'Used both hints'):(x.ans?'You said “'+esc(x.ans)+'”':'Skipped')}</small></span><span class="pts">${x.pts*mult()}</span></div>`).join('');
+  $('rlist').innerHTML=results.map(x=>`<div class="rrow"><i style="background:${C[x.i][1]}"></i><span><b>${esc(G.display(C[x.i][0]))}</b><small>${x.pts?(x.pts===3?'No hints':x.pts===2?'Used the clue':'Used both hints'):(x.ans?'You said “'+esc(x.ans)+'”':'Skipped')}</small></span><span class="pts">${G.pointsFor(mode,x.pts)}</span></div>`).join('');
   const rk=$('rrank');rk.hidden=true;
   if(roundType!=='daily')return;
   const local={points:pts,mode,marks};store.set('wada-played-'+PUZZLE,local);
@@ -358,7 +359,7 @@ $('again').onclick=()=>{roundType='free';document.querySelectorAll('#rounds .opt
 $('toboard').onclick=()=>openBoard('day',PUZZLE);
 const toast=$('toast');let tt;
 $('share').onclick=()=>{
-  const text=`Wada you know about colour? ${roundType==='daily'?'No. '+PUZZLE:'Practice'} · ${mode==='pick'?'Pick':'Type ×2'} · ${score*mult()}/${30*mult()}\n${G.gridText(results.map(r=>r.pts))}\n${location.origin}`;
+  const text=`Wada you know about colour? ${roundType==='daily'?'No. '+PUZZLE:'Practice'} · ${mode==='pick'?'Pick':'Type ×2'} · ${score}/${G.MAX_BASE*mult()}\n${G.gridText(results.map(r=>r.pts))}\n${location.origin}`;
   const done=t=>{toast.textContent=t;toast.hidden=false;clearTimeout(tt);tt=setTimeout(()=>toast.hidden=true,1800);};
   try{navigator.clipboard.writeText(text).then(()=>done('Result copied'),()=>done(text));}catch(e){done(text);}
 };
