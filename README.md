@@ -41,7 +41,7 @@ Answer the questions to create a new project. The CLI prints your site's address
 
 ## How scoring works
 
-- Each colour: 6 points with no hints, 2 with the cryptic clue, 1 with both hints, 0 if wrong. With four names to choose from, a clue makes the answer nearly certain, so hints cost a lot.
+- Each colour: 6 points with no hints, 3 with the cryptic clue, 1 with both hints, 0 if wrong. An unhinted answer is worth two clued ones.
 - In pick mode the hints don't show the word count, since that would often give the answer away.
 - **Type mode doubles the score** (up to 120). Pick mode is up to 60. The points live in `POINTS` and the multiplier in `MULTIPLIER` in `public/game.mjs`.
 - Every round stores what happened on each colour (no hints, clue, both hints, wrong), and the leaderboard works out points from that each time it loads. So if you change `POINTS`, all past rounds are re-scored the same way.

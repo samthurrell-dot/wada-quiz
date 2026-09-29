@@ -640,8 +640,8 @@ export const MULTIPLIER = { pick: 1, type: 2 }; // typing is harder, so it score
 // Each answer has an outcome code: 3 = right with no hints, 2 = right with the clue, 1 = right with both hints, 0 = wrong.
 // Codes are what rounds store (and what the coloured squares show); points come from this table,
 // so the scoring can change and every stored round is re-scored the same way.
-// Unhinted answers are worth three times a clued one: with four options, a clue makes the answer nearly certain.
-export const POINTS = [0, 1, 2, 6];
+// An unhinted answer is worth two clued ones: knowing the colour should pay clearly more than using the clue.
+export const POINTS = [0, 1, 3, 6];
 export const MAX_BASE = 60; // 10 colours × 6
 export const outcome = (correct, hints) => (correct ? 3 - Math.max(0, Math.min(2, hints)) : 0);
 export const basePoints = outcome; // kept for older code: returns the outcome code
