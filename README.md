@@ -10,6 +10,7 @@ A daily colour puzzle. Name ten of Sanzo Wada's colours from cryptic clues; scor
 | `public/game.mjs` | Colours, clues, daily puzzle selection and scoring. Used by the page **and** the server, so both always agree |
 | `netlify/functions/submit.mjs` | Receives a finished daily round, **works out the score itself**, and saves it (`/api/submit`) |
 | `netlify/functions/leaderboard.mjs` | Today's table and the all-time table (`/api/leaderboard`) |
+| `netlify/functions/link.mjs` | Joins two devices into one player (`/api/link`) |
 | `netlify/lib/scores.mjs` | Works out points and all-time totals from the stored rounds |
 | `netlify.toml` | Tells Netlify where the page and functions are |
 | `package.json` | One dependency: `@netlify/blobs`, Netlify's built-in storage |
@@ -54,7 +55,7 @@ Answer the questions to create a new project. The CLI prints your site's address
 - Players choose a display name; no sign-up. Each device gets a random private id, kept in the browser.
 - The page sends its answers, not its score. The server checks the answers against the day's colours, so editing the page can't produce a fake score.
 - What the server **can't** check is whether someone looked a name up, or said they used no hints when they did. It's a game among friends, so that's accepted.
-- If someone plays on a new phone, they get a new id (and a fresh all-time total).
+- Each device gets its own id. To join two devices, open **Leaderboard → Playing on more than one device?**, copy the link and open it on the other device. The server records `alias/<old id>` → the id to play as, and the leaderboard merges past rounds (if both devices played the same day, the first round counts).
 
 ## Managing scores
 

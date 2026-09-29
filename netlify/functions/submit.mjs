@@ -2,7 +2,7 @@
 // The page sends its answers; the score is worked out here, so it can't be faked by editing the page.
 import { getStore } from "@netlify/blobs";
 import { dailyQuestions, puzzleNumber, scoreRound, QUESTIONS } from "../../public/game.mjs";
-import { allRounds, totals, pointsOf } from "../lib/scores.mjs";
+import { allRounds, totals, pointsOf, aliases, canon } from "../lib/scores.mjs";
 
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
@@ -29,8 +29,10 @@ export default async (req) => {
   const questions = dailyQuestions(puzzle);
   const result = scoreRound(questions, mode, answers);
   const store = getStore({ name: "wada-quiz", consistency: "strong" });
+  const map = await aliases(store);
+  const pid = canon(map, playerId); // a joined device plays as the player it was joined to
 
-  const dayKey = `day/${puzzle}/${playerId}`;
+  const dayKey = `day/${puzzle}/${pid}`;
   const entry = { name: nm, mode, points: result.points, base: result.base, marks: result.marks, at: new Date().toISOString() };
   const write = await store.setJSON(dayKey, entry, { onlyIfNew: true });
   if (write && write.modified === false) {
@@ -40,14 +42,14 @@ export default async (req) => {
   }
 
   // keep the player's name up to date (totals are worked out from their rounds, see netlify/lib/scores.mjs)
-  const pKey = `player/${playerId}`;
+  const pKey = `player/${pid}`;
   const prev = (await store.get(pKey, { type: "json" })) || {};
   await store.setJSON(pKey, { ...prev, name: nm, last: Math.max(prev.last || 0, puzzle) });
 
-  const rounds = await allRounds(store);
+  const rounds = await allRounds(store, map);
   const todays = rounds.filter((r) => r.puzzle === puzzle).map((r) => r.entry);
   const better = todays.filter((e) => e.points > entry.points || (e.points === entry.points && e.at < entry.at)).length;
-  const p = totals(rounds, today).find((x) => x.id === playerId) || { name: nm, total: entry.points, played: 1, streak: 1 };
+  const p = totals(rounds, today).find((x) => x.id === pid) || { name: nm, total: entry.points, played: 1, streak: 1 };
 
   return json({ entry, puzzle, rank: better + 1, of: todays.length, player: { name: p.name, total: p.total, played: p.played, streak: p.streak } });
 };

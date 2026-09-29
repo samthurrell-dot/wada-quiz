@@ -1,19 +1,32 @@
 // Shared scoring for the leaderboard and submit functions.
 // Points are always worked out from each round's stored outcome codes (marks), never from the points saved at the time,
 // so a change to the points table re-scores every past round the same way.
+// Players can join devices: alias/<oldId> points at the id they now play as, and rounds are merged under that id.
 import { roundPoints } from "../../public/game.mjs";
 
 export const pointsOf = (e) => (Array.isArray(e.marks) && e.marks.length ? roundPoints(e.mode, e.marks) : e.points || 0);
 
-// Read every stored round: [{puzzle, id, entry}]
-export async function allRounds(store) {
+export async function aliases(store) {
+  const { blobs } = await store.list({ prefix: "alias/" });
+  const map = new Map();
+  await Promise.all(blobs.map(async (b) => { const v = await store.get(b.key, { type: "json" }); if (v && v.to) map.set(b.key.slice(6), v.to); }));
+  return map;
+}
+// follow alias links to the id a player now uses (guards against loops)
+export function canon(map, id) { let x = id; for (let i = 0; i < 10 && map.has(x); i++) x = map.get(x); return x; }
+
+// Read every stored round, merged by player: [{puzzle, id, entry}]. If joined devices both played a day, the first round counts.
+export async function allRounds(store, map) {
+  map = map || (await aliases(store));
   const { blobs } = await store.list({ prefix: "day/" });
-  const rows = await Promise.all(blobs.slice(0, 5000).map(async (b) => {
+  const rows = (await Promise.all(blobs.slice(0, 5000).map(async (b) => {
     const [, puzzle, id] = b.key.split("/");
     const entry = await store.get(b.key, { type: "json" });
-    return entry && { puzzle: Number(puzzle), id, entry: { ...entry, points: pointsOf(entry) } };
-  }));
-  return rows.filter(Boolean);
+    return entry && { puzzle: Number(puzzle), id: canon(map, id), entry: { ...entry, points: pointsOf(entry) } };
+  }))).filter(Boolean);
+  const first = new Map();
+  for (const r of rows) { const k = r.puzzle + "/" + r.id, f = first.get(k); if (!f || (r.entry.at || "") < (f.entry.at || "")) first.set(k, r); }
+  return [...first.values()];
 }
 
 // All-time totals per player from their rounds

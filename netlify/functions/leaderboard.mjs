@@ -3,7 +3,7 @@
 // Scores are recalculated from each round's outcomes with the current points table (see netlify/lib/scores.mjs).
 import { getStore } from "@netlify/blobs";
 import { puzzleNumber } from "../../public/game.mjs";
-import { allRounds, totals } from "../lib/scores.mjs";
+import { allRounds, totals, aliases, canon } from "../lib/scores.mjs";
 
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
@@ -11,10 +11,11 @@ const json = (obj, status = 200) =>
 export default async (req) => {
   const url = new URL(req.url);
   const scope = url.searchParams.get("scope") === "all" ? "all" : "day";
-  const me = url.searchParams.get("me") || "";
   const today = puzzleNumber();
   const store = getStore({ name: "wada-quiz", consistency: "strong" });
-  const rounds = await allRounds(store);
+  const map = await aliases(store);
+  const me = canon(map, url.searchParams.get("me") || "");
+  const rounds = await allRounds(store, map);
 
   if (scope === "day") {
     let puzzle = parseInt(url.searchParams.get("puzzle") || today, 10);

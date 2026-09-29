@@ -119,6 +119,10 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
 .chip{background:var(--raised);border:1px solid var(--line-strong);border-radius:999px;color:var(--ink);font-size:14px;font-weight:700;min-height:36px;padding:0 14px;cursor:pointer;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .namebox{display:flex;flex-direction:column;gap:6px;}
 .small{font-size:14px;}
+.devices{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:8px;}
+.devices summary{cursor:pointer;font-weight:700;min-height:40px;display:flex;align-items:center;}
+.devices[open]{display:flex;}
+.devices p{margin:0 0 8px;}
 .mult{font-family:var(--mono);font-size:14px;font-weight:500;padding:1px 6px;border:1px solid var(--ink-soft);border-radius:2px;margin-left:4px;vertical-align:2px;}
 .played{padding:12px 14px;background:var(--raised);border:1px solid var(--line);font-size:15px;}
 .rank{font-size:17px;padding:12px 14px;background:var(--raised);border:1px solid var(--line);}
@@ -236,6 +240,13 @@ table.lb{width:100%;border-collapse:collapse;font-size:15px;}
     <p class="muted" id="bmsg"></p>
     <div class="table-wrap"><table class="lb" id="lb"></table></div>
     <button type="button" class="btn alt" id="bback" style="align-self:flex-start">Back to the game</button>
+    <details class="devices">
+      <summary>Playing on more than one device?</summary>
+      <p class="small">Each phone or computer counts as a separate player. To join them into one, copy your link below and open it on your other device. Its scores are then combined with this one’s, under one name. If both devices played the same day, the first round counts.</p>
+      <p class="small">Only open it on your own devices: anyone with the link can play as you.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button type="button" class="btn alt" id="copylink">Copy my link</button><button type="button" class="btn alt" id="sharelink" hidden>Send it to myself</button></div>
+      <p class="small muted" id="linkmsg" aria-live="polite"></p>
+    </details>
   </section>
 
   <p class="foot">Colour names and values from <a href="https://github.com/mattdesl/dictionary-of-colour-combinations">Matt DesLauriers’ open dataset</a> of Wada’s dictionary (MIT licence). Names keep the book’s spellings; the usual spelling is accepted too. A new puzzle every day at midnight UK time.</p>
@@ -253,6 +264,22 @@ const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.
 // player identity
 let me=store.get('wada-player',null);
 if(!me||!me.id){me={id:(crypto.randomUUID?crypto.randomUUID():Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join('')),name:''};store.set('wada-player',me);}
+// ---- joining devices: a link carries this device's private id; opening it on another device joins the two
+const note=m=>{const el=$('toast');el.textContent=m;el.hidden=false;clearTimeout(note.t);note.t=setTimeout(()=>el.hidden=true,6000);};
+const joinLink=()=>`${location.origin}${location.pathname}?join=${encodeURIComponent(me.id)}`;
+$('copylink').onclick=async()=>{try{await navigator.clipboard.writeText(joinLink());$('linkmsg').textContent='Link copied. Open it on your other device.';}catch(e){$('linkmsg').textContent=joinLink();}};
+if(navigator.share){$('sharelink').hidden=false;$('sharelink').onclick=()=>navigator.share({title:'Wada you know about colour?',text:'Open this on my other device to join my scores',url:joinLink()}).catch(()=>{});}
+(async()=>{
+  const q=new URLSearchParams(location.search),to=q.get('join');if(!to)return;
+  history.replaceState(null,'',location.pathname);
+  if(to===me.id){note('This link is for this device already. Open it on your other device.');return;}
+  if(!confirm('Join this device to the player whose link you opened?\n\nScores from both devices will be combined under one name, and this device will play as that player from now on.'))return;
+  try{const r=await fetch('/api/link',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({from:me.id,to})});const d=await r.json();
+    if(!r.ok||!d.ok){note(d.error||'Those devices couldn’t be joined.');return;}
+    me.id=d.to;if(d.name)me.name=d.name;store.set('wada-player',me);renderWho();
+    note(d.already?'These devices were already joined.':`Joined. This device now plays as ${me.name||'you'}${d.rounds?` (${d.rounds} round${d.rounds===1?'':'s'})`:''}.`);
+  }catch(e){note('Couldn’t reach the leaderboard to join devices. Try again later.');}
+})();
 function renderWho(){const w=$('whoami');w.hidden=!me.name;w.textContent=me.name?me.name:'';$('name').value=me.name||'';}
 $('namebox').addEventListener('submit',e=>{e.preventDefault();const n=$('name').value.replace(/[<>"'&`]/g,'').replace(/\s+/g,' ').trim().slice(0,20);
   if(n.length<2){$('namemsg').textContent='Use at least 2 characters.';return;}me.name=n;store.set('wada-player',me);renderWho();$('namemsg').textContent=`Saved. You’re playing as ${n}.`;});
