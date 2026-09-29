@@ -7,6 +7,7 @@ A daily colour puzzle. Name ten of Sanzo Wada's colours from cryptic clues; scor
 | Path | What it is |
 |---|---|
 | `public/index.html` | The game page |
+| `public/learn/` | The Learn section: four story pages about Wada’s colours. They are built in the `wada-mix` repo (`python3 source/build.py` writes them to `export/learn/`); copy them here to update |
 | `public/game.mjs` | Colours, clues, daily puzzle selection and scoring. Used by the page **and** the server, so both always agree |
 | `netlify/functions/submit.mjs` | Receives a finished daily round, **works out the score itself**, and saves it (`/api/submit`) |
 | `netlify/functions/leaderboard.mjs` | Today's table and the all-time table (`/api/leaderboard`) |

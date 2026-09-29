@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}*{box-sizing:border-box}body{margin:0;font:14px/1.5 system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<nav style="font:600 14px 'Zen Kaku Gothic New',system-ui,sans-serif;background:#12354e;color:#ffefae;padding:10px 16px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;">
+<a href="/" style="color:#ffefae;text-decoration:none;">← Wada you know about colour?</a><a href="/learn/" style="color:#ffefae;">Learn</a></nav>
+<title>Wada and the Bird Man</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#faf5e1; --raised:#fffdf6; --sunk:#f5ecc2; --line:#d9d3bb; --line-strong:#547076;
+  --ink:#111314; --ink-soft:#34454c; --ink-muted:#547076; --accent:#12354e; --on-accent:#ffefae; --bar:#34454c;
+  --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",Georgia,serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --paper:#111314; --raised:#1d2225; --sunk:#12354e; --line:#2c373c; --line-strong:#6b8a91;
+  --ink:#f5ecc2; --ink-soft:#b6bfc1; --ink-muted:#a1a39a; --accent:#97acc8; --on-accent:#111314; --bar:#b6bfc1;}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --paper:#111314; --raised:#1d2225; --sunk:#12354e; --line:#2c373c; --line-strong:#6b8a91;
+  --ink:#f5ecc2; --ink-soft:#b6bfc1; --ink-muted:#a1a39a; --accent:#97acc8; --on-accent:#111314; --bar:#b6bfc1;}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.65;}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:32px 64px;display:flex;flex-direction:column;gap:52px;}
+h1,h2,h3{font-family:var(--serif);font-weight:700;margin:0;text-wrap:balance;}
+h1{font-size:clamp(36px,6.5vw,58px);line-height:1.03;}
+h2{font-size:clamp(24px,4vw,30px);line-height:1.2;}
+p{margin:0;}
+.label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);}
+.prose{display:flex;flex-direction:column;gap:14px;max-width:66ch;}
+.prose p{color:var(--ink-soft);}
+.mono{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;}
+section{display:flex;flex-direction:column;gap:18px;}
+.split{display:flex;height:40px;}
+.split div{display:flex;align-items:center;padding-inline:10px;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:15px;color:var(--ink-soft);}
+.legend span{display:flex;align-items:center;gap:8px;}
+.legend i{width:14px;height:14px;display:block;}
+.k1{background:var(--ink);color:var(--paper);}
+.k2{background:var(--ink-soft);color:var(--paper);}
+.k3{background:var(--ink-muted);color:var(--paper);}
+.k4{background:var(--line);color:var(--ink);}
+.pull{font-family:var(--serif);font-size:clamp(22px,3.6vw,28px);line-height:1.35;max-width:34ch;border-top:2px solid var(--ink);padding-top:14px;}
+.fig{background:var(--raised);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:12px;position:relative;}
+svg{display:block;width:100%;height:auto;}
+svg text{fill:var(--ink-muted);font-family:var(--sans);font-size:22px;}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);font-size:13px;padding:4px 8px;border-radius:2px;white-space:nowrap;transform:translate(-50%,-135%);}
+.typos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:0 24px;}
+.typo{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;align-items:center;padding-block:10px;border-bottom:1px solid var(--line);}
+.typo i{width:28px;height:28px;display:block;}
+.typo s{color:var(--ink-muted);}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line-strong);border-radius:2px;align-self:flex-start;}
+.seg button{min-height:44px;padding:0 14px;border:0;background:transparent;color:var(--ink-soft);font:500 15px var(--sans);cursor:pointer;}
+.seg button[aria-pressed="true"]{background:var(--ink-soft);color:var(--paper);}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:0 24px;}
+.pair{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding-block:10px;border-bottom:1px solid var(--line);}
+.sw{display:flex;}
+.sw i{width:30px;height:40px;display:block;}
+.pn{display:flex;flex-direction:column;line-height:1.3;min-width:0;}
+.pn b{font-size:15px;}
+.pn span{font-size:13px;color:var(--ink-muted);}
+.de{font-family:var(--mono);font-size:13px;color:var(--ink-soft);text-align:right;}
+.ngh{font-size:19px;margin-top:6px;}
+.nature{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:16px;}
+.nat{margin:0;background:var(--raised);border:1px solid var(--line);display:flex;flex-direction:column;}
+.natimg{aspect-ratio:4/3;background:var(--sunk);position:relative;overflow:hidden;}
+.natimg img{width:100%;height:100%;object-fit:cover;display:block;}
+.natfb{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;padding:16px;font-size:14px;color:var(--ink-soft);}
+.natimg.broken img{display:none;}
+.natimg.broken .natfb{display:flex;}
+.nat figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;}
+.natname{display:flex;gap:10px;align-items:center;}
+.natname i{width:36px;height:36px;flex:none;display:block;border:1px solid var(--line);}
+.natname div{display:flex;flex-direction:column;line-height:1.3;}
+.natname b{font-size:16px;}
+.natname span{font-size:13px;color:var(--ink-muted);}
+.nat p{font-size:14px;color:var(--ink-soft);line-height:1.5;}
+.credit{font-size:12px;color:var(--ink-muted);}
+.prose a{color:var(--ink-soft);}
+.foot{font-size:14px;color:var(--ink-muted);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:6px;max-width:72ch;}
+.foot a{color:var(--ink-soft);}
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:16px;">
+    <span class="label">Where the English names in Wada’s dictionary come from</span>
+    <h1>Wada and the Bird Man</h1>
+    <div class="prose">
+      <p>The English names in <em>A Dictionary of Color Combinations</em> are oddly specific: Hay’s Russet, Kronberg’s Green, Cotinga Purple. They come from a 1912 American book, <em>Color Standards and Color Nomenclature</em>, by the ornithologist Robert Ridgway. He made it so that naturalists describing birds could name a colour exactly. Here all 159 of Wada’s names are checked against Ridgway’s 1,115.</p>
+    </div>
+  </header>
+
+  <section>
+    <p class="pull" id="pull"></p>
+    <div class="split" id="split" role="img"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section>
+    <h2>The colours match too, not just the names</h2>
+    <div class="prose">
+      <p>If Ridgway’s names were simply borrowed as labels, the colours behind them could be anything. They are not. For each colour that shares a name, the chart below measures how different Wada’s colour looks from Ridgway’s swatch of the same name (ΔE, where a smaller number means closer).</p>
+    </div>
+    <div class="fig">
+      <svg id="dist" viewBox="0 0 760 250" role="img" aria-label="Distribution of colour differences between same-named Wada and Ridgway colours, compared with random pairs"></svg>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+    <div class="prose"><p id="disttxt"></p></div>
+  </section>
+
+  <section>
+    <h2>Twelve names that were copied with a slip</h2>
+    <div class="prose"><p>Some names in the English edition are misspellings of Ridgway’s. They read like typing or transcription errors, which is good evidence that someone worked from Ridgway’s list.</p></div>
+    <div class="typos" id="typos"></div>
+  </section>
+
+  <section>
+    <h2>What we don’t know</h2>
+    <div class="prose">
+      <p>No one has confirmed who chose the English names. They may come from Wada’s original volumes of the 1930s, or have been added when Seigensha republished the book in 2010. Wada founded the Japan Standard Color Association in 1927, and Ridgway’s book was a widely used colour standard at the time, so it would have been a natural reference for him. That is a likely story, not a proven one.</p>
+      <p>The 23 names with no Ridgway match are mostly plain words: Red, Blue, Yellow Orange, Khaki, Ecru. Those look like simple English labels for colours Ridgway did not name.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The birds, and the rest of nature</h2>
+    <div class="prose">
+      <p>Ridgway was a curator of birds at the Smithsonian. His colour names spread through bird field guides and museum descriptions, where a breast might be “cinnamon-buff” or a back “Hay’s russet”. One of Wada’s names is itself a bird: <strong>Cotinga Purple</strong>, after the cotingas of Central and South America.</p>
+      <p>Many of the other names point to something real in nature: a bird, a flower, a stone. Here are the originals next to Wada’s colour. The chip is Wada’s printed colour; the photo is the real thing, so lighting and camera will make them differ.</p>
+    </div>
+    <h3 class="ngh">Birds</h3>
+    <div class="nature">
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cotinga_maynana_Cotinga_turquesa_Plum-throated_Cotinga_%28male%29_%287799535696%29.jpg?width=640" alt="Plum-throated cotinga (male)" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Cotinga_maynana_Cotinga_turquesa_Plum-throated_Cotinga_%28male%29_%287799535696%29.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#501345"></i><div><b>Cotinga Purple</b><span>Plum-throated cotinga (male)</span></div></div>
+          <p>The one Wada name that is a bird. Look at the throat patch, not the turquoise body.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Cotinga_maynana_Cotinga_turquesa_Plum-throated_Cotinga_%28male%29_%287799535696%29.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pavo_cristatus_%28common_peafowl%29.jpg?width=640" alt="Indian peafowl" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Pavo_cristatus_%28common_peafowl%29.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#00939b"></i><div><b>Peacock Blue</b><span>Indian peafowl</span></div></div>
+          <p>The deep greenish blue of the neck and breast feathers.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Pavo_cristatus_%28common_peafowl%29.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Strix_aluco.jpg?width=640" alt="Tawny owl" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Strix_aluco.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#c56127"></i><div><b>Vinaceous Tawny</b><span>Tawny owl</span></div></div>
+          <p>“Tawny” is the birders’ word for this warm brown. Ridgway’s “vinaceous” means a wine-red cast, so Wada’s version is redder than most owls.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Strix_aluco.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+    </div>
+    <h3 class="ngh">Other animals</h3>
+    <div class="nature">
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/European_tree_frog_%28Hyla_arborea%29_Extremadura.jpg?width=640" alt="European tree frog" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:European_tree_frog_%28Hyla_arborea%29_Extremadura.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#8fa071"></i><div><b>Rainette Green</b><span>European tree frog</span></div></div>
+          <p><i lang="fr">Rainette</i> is French for tree frog. Ridgway’s swatch is a soft, greyed green; living frogs are often brighter.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:European_tree_frog_%28Hyla_arborea%29_Extremadura.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sepia_officinalis.jpg?width=640" alt="Common cuttlefish" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Sepia_officinalis.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#644b1e"></i><div><b>Sepia</b><span>Common cuttlefish</span></div></div>
+          <p>Sepia ink was made from cuttlefish ink sacs. The Latin name of the cuttlefish is <i>Sepia</i>.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Sepia_officinalis.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Corallium_rubrum_%28red_coral%29_1_%2815691074776%29.jpg?width=640" alt="Red coral" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Corallium_rubrum_%28red_coral%29_1_%2815691074776%29.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#f58e84"></i><div><b>Coral Red</b><span>Red coral</span></div></div>
+          <p>Mediterranean precious coral. Wada’s Coral Red is the paler, pinker end of its range.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Corallium_rubrum_%28red_coral%29_1_%2815691074776%29.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+    </div>
+    <h3 class="ngh">Plants</h3>
+    <div class="nature">
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Lilac_blossom_Fliederbl%C3%BCte_Syringa_vulgaris_05.jpg?width=640" alt="Common lilac" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Lilac_blossom_Fliederbl%C3%BCte_Syringa_vulgaris_05.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#b984af"></i><div><b>Lilac</b><span>Common lilac</span></div></div>
+          <p>The garden shrub, in flower in May.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Lilac_blossom_Fliederbl%C3%BCte_Syringa_vulgaris_05.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aconitum_napellus_011.JPG?width=640" alt="Monkshood (aconite)" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Aconitum_napellus_011.JPG">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#a36aa5"></i><div><b>Aconite Violet</b><span>Monkshood (aconite)</span></div></div>
+          <p>The hooded flowers of <i>Aconitum napellus</i>, a poisonous British native.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Aconitum_napellus_011.JPG">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Laelia_speciosa_%28as_Laelia_majalis%29_-Bateman_Orch._Mex._Guat._pl._23_%281840%29.jpg?width=640" alt="Laelia orchid" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Laelia_speciosa_%28as_Laelia_majalis%29_-Bateman_Orch._Mex._Guat._pl._23_%281840%29.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#ca92a8"></i><div><b>Laelia Pink</b><span><i>Laelia</i> orchid</span></div></div>
+          <p>A Mexican orchid, shown in an 1840 hand-coloured plate, close to the kind of reference Ridgway worked from.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Laelia_speciosa_%28as_Laelia_majalis%29_-Bateman_Orch._Mex._Guat._pl._23_%281840%29.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Azure_Blue_Sage_%28Salvia_azurea%29.jpg?width=640" alt="Azure sage" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Azure_Blue_Sage_%28Salvia_azurea%29.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#97acc8"></i><div><b>Salvia Blue</b><span>Azure sage</span></div></div>
+          <p>Blue-flowered sages give this soft, powdery blue.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Azure_Blue_Sage_%28Salvia_azurea%29.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rubia_tinctorum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-123.jpg?width=640" alt="Madder plant" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Rubia_tinctorum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-123.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#762c19"></i><div><b>Madder Brown</b><span>Madder plant</span></div></div>
+          <p>A red-brown dye came from madder roots. This 1887 plate shows the whole plant, roots included.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Rubia_tinctorum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-123.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+    </div>
+    <h3 class="ngh">Minerals</h3>
+    <div class="nature">
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Turquoise_with_quartz.jpg?width=640" alt="Turquoise" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Turquoise_with_quartz.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#b5decc"></i><div><b>Turquoise Green</b><span>Turquoise</span></div></div>
+          <p>The mineral. Wada’s colour is the pale, greener kind of stone.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Turquoise_with_quartz.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+      <figure class="nat">
+        <div class="natimg"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cubic_Pyrite_In_Matrix.jpg?width=640" alt="Pyrite (fool’s gold)" loading="lazy" decoding="async" onerror="this.parentNode.classList.add('broken')"><a class="natfb" href="https://commons.wikimedia.org/wiki/File:Cubic_Pyrite_In_Matrix.jpg">View photo on Wikimedia Commons</a></div>
+        <figcaption>
+          <div class="natname"><i style="background:#cab356"></i><div><b>Pyrite Yellow</b><span>Pyrite (fool’s gold)</span></div></div>
+          <p>The brassy yellow of pyrite crystals, dulled towards olive.</p>
+          <a class="credit" href="https://commons.wikimedia.org/wiki/File:Cubic_Pyrite_In_Matrix.jpg">Photo: Wikimedia Commons (photographer and licence)</a>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="prose"><p><b>See all of them:</b> <a href="where-the-names-come-from.html">Where Wada’s Names Come From</a> has a picture for every name with a real-world source, a map of where the names come from, and which kinds of colour get named after nature.</p></div>
+  </section>
+
+  <section>
+    <h2>Every colour, side by side</h2>
+    <div class="prose"><p>Left chip: Wada’s colour. Right chip: Ridgway’s swatch of the same name, taken from scans of the 1912 plates. Old paper and fading make many Ridgway swatches look duller than they were printed.</p></div>
+    <div class="seg" role="group" aria-label="Filter by type of match" id="seg"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <div class="foot">
+    <p>Method: names compared after removing punctuation and case; spelling slips checked by hand. Colour difference is CIE ΔE 1976 in Lab. The random baseline pairs each Wada colour with a random Ridgway colour.</p>
+    <p>Sources: <a href="https://github.com/mattdesl/dictionary-of-colour-combinations">Wada colour data</a> (Matt DesLauriers, MIT licence) · <a href="https://github.com/davo/Color-Standards-and-Color-Nomenclature">Ridgway colour data</a> (davo, parsed from the 1912 plates) · <a href="https://www.gutenberg.org/files/63087/63087-h/63087-h.htm">Ridgway’s book on Project Gutenberg</a> · <a href="https://en.wikipedia.org/wiki/Robert_Ridgway">Robert Ridgway</a> · <a href="https://en.wikipedia.org/wiki/Sanzo_Wada">Sanzo Wada</a>.</p>
+  </div>
+</div>
+
+<script>
+const ROWS=[{"i": 0, "wada": "Hermosa Pink", "hex": "#f9c1ce", "kind": "exact", "ridgway": "Hermosa Pink", "rhex": "#f9c4cb", "plate": "I", "de": 3.1}, {"i": 1, "wada": "Corinthian Pink", "hex": "#f8b6ba", "kind": "exact", "ridgway": "Corinthian Pink", "rhex": "#cb9c9d", "plate": "XXVII", "de": 14.1}, {"i": 2, "wada": "Cameo Pink", "hex": "#e0b3b6", "kind": "exact", "ridgway": "Cameo Pink", "rhex": "#eec8cd", "plate": "XXVI", "de": 7.7}, {"i": 3, "wada": "Fawn", "hex": "#d1b0a7", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 4, "wada": "Light Brown Drab", "hex": "#b59392", "kind": "modified", "ridgway": "Light Brownish Drab", "rhex": "#a28e85", "plate": "XLV", "de": 8.2}, {"i": 5, "wada": "Coral Red", "hex": "#f58e84", "kind": "exact", "ridgway": "Coral Red", "rhex": "#dc5c4b", "plate": "XIII", "de": 21.3}, {"i": 6, "wada": "Fresh Color", "hex": "#f6917e", "kind": "spelling", "ridgway": "Flesh Color", "rhex": "#f1a58d", "plate": "XIV", "de": 13.2}, {"i": 7, "wada": "Grenadine Pink", "hex": "#f48067", "kind": "exact", "ridgway": "Grenadine Pink", "rhex": "#fe9f86", "plate": "II", "de": 15.1}, {"i": 8, "wada": "Eosine Pink", "hex": "#f37f94", "kind": "exact", "ridgway": "Eosine Pink", "rhex": "#fd8790", "plate": "I", "de": 6.0}, {"i": 9, "wada": "Spinel Red", "hex": "#f27291", "kind": "exact", "ridgway": "Spinel Red", "rhex": "#cc526b", "plate": "XXVI", "de": 13.2}, {"i": 10, "wada": "Old Rose", "hex": "#d46d7a", "kind": "exact", "ridgway": "Old Rose", "rhex": "#d9696f", "plate": "XIII", "de": 5.8}, {"i": 11, "wada": "Eugenia Red | A", "hex": "#e2625e", "kind": "exact", "ridgway": "Eugenia Red", "rhex": "#c9565b", "plate": "XIII", "de": 11.6}, {"i": 12, "wada": "Eugenia Red | B", "hex": "#da525d", "kind": "exact", "ridgway": "Eugenia Red", "rhex": "#c9565b", "plate": "XIII", "de": 9.5}, {"i": 13, "wada": "Raw Sienna", "hex": "#bb7125", "kind": "exact", "ridgway": "Raw Sienna", "rhex": "#c38213", "plate": "III", "de": 13.7}, {"i": 14, "wada": "Vinaceous Tawny", "hex": "#c56127", "kind": "exact", "ridgway": "Vinaceous-Tawny", "rhex": "#cb7f5a", "plate": "XXVIII", "de": 23.0}, {"i": 15, "wada": "Jasper Red", "hex": "#eb5324", "kind": "exact", "ridgway": "Jasper Red", "rhex": "#d9544f", "plate": "XIII", "de": 28.2}, {"i": 16, "wada": "Spectrum Red", "hex": "#e31f26", "kind": "exact", "ridgway": "Spectrum Red", "rhex": "#a43530", "plate": "I", "de": 35.1}, {"i": 17, "wada": "Red Orange", "hex": "#dd4027", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 18, "wada": "Etruscan Red", "hex": "#c55347", "kind": "exact", "ridgway": "Etruscan Red", "rhex": "#ad6b60", "plate": "XXVII", "de": 25.0}, {"i": 19, "wada": "Burnt Sienna", "hex": "#ae5224", "kind": "exact", "ridgway": "Burnt Sienna", "rhex": "#964a2d", "plate": "II", "de": 15.2}, {"i": 20, "wada": "Ochre Red", "hex": "#ab544d", "kind": "spelling", "ridgway": "Ocher Red", "rhex": "#a66558", "plate": "XXVII", "de": 11.9}, {"i": 21, "wada": "Scarlet", "hex": "#cb2f43", "kind": "exact", "ridgway": "Scarlet", "rhex": "#e94527", "plate": "I", "de": 24.8}, {"i": 22, "wada": "Carmine", "hex": "#cc1236", "kind": "exact", "ridgway": "Carmine", "rhex": "#932f31", "plate": "I", "de": 29.1}, {"i": 23, "wada": "Indian Lake", "hex": "#c53c69", "kind": "exact", "ridgway": "Indian Lake", "rhex": "#8a4955", "plate": "XXVI", "de": 29.5}, {"i": 24, "wada": "Rosolanc Purple", "hex": "#b73f74", "kind": "spelling", "ridgway": "Rosolane Purple", "rhex": "#bf507e", "plate": "XXVI", "de": 5.1}, {"i": 25, "wada": "Pomegranite Purple", "hex": "#b71f57", "kind": "spelling", "ridgway": "Pomegranate Purple", "rhex": "#b83250", "plate": "XII", "de": 8.7}, {"i": 26, "wada": "Hydrangea Red", "hex": "#a94151", "kind": "exact", "ridgway": "Hydrangea Red", "rhex": "#9c6159", "plate": "XXVII", "de": 21.8}, {"i": 27, "wada": "Brick Red", "hex": "#a84222", "kind": "exact", "ridgway": "Brick Red", "rhex": "#915248", "plate": "XIII", "de": 28.5}, {"i": 28, "wada": "Carmine Red", "hex": "#a62c37", "kind": "modified", "ridgway": "Carmine", "rhex": "#932f31", "plate": "I", "de": 9.3}, {"i": 29, "wada": "Pompeian Red", "hex": "#ab2439", "kind": "exact", "ridgway": "Pompeian Red", "rhex": "#ac524c", "plate": "XIII", "de": 20.1}, {"i": 30, "wada": "Red", "hex": "#a72144", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 31, "wada": "Brown", "hex": "#7c4226", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 32, "wada": "Hay's Russet", "hex": "#793327", "kind": "exact", "ridgway": "Hay's Russet", "rhex": "#92513e", "plate": "XIV", "de": 11.9}, {"i": 33, "wada": "Vandyke Red", "hex": "#82241f", "kind": "exact", "ridgway": "Vandyke Red", "rhex": "#814042", "plate": "XIII", "de": 20.9}, {"i": 34, "wada": "Pansy Purple", "hex": "#7d133a", "kind": "exact", "ridgway": "Pansy Purple", "rhex": "#843751", "plate": "XII", "de": 13.3}, {"i": 35, "wada": "Pale Burnt Lake", "hex": "#802626", "kind": "modified", "ridgway": "Burnt Lake", "rhex": "#653b3b", "plate": "XII", "de": 25.3}, {"i": 36, "wada": "Violet Red", "hex": "#642d5e", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 37, "wada": "Vistoris Lake", "hex": "#6d4145", "kind": "spelling", "ridgway": "Victoria Lake", "rhex": "#623c38", "plate": "I", "de": 6.3}, {"i": 38, "wada": "Sulpher Yellow", "hex": "#f5ecc2", "kind": "spelling", "ridgway": "Sulphur Yellow", "rhex": "#faedad", "plate": "V", "de": 11.5}, {"i": 39, "wada": "Pale Lemon Yellow", "hex": "#ffefae", "kind": "exact", "ridgway": "Pale Lemon Yellow", "rhex": "#fee562", "plate": "IV", "de": 32.0}, {"i": 40, "wada": "Naples Yellow", "hex": "#fbe6a0", "kind": "exact", "ridgway": "Naples Yellow", "rhex": "#ecce88", "plate": "XVI", "de": 8.2}, {"i": 41, "wada": "Ivory Buff", "hex": "#ebd3a2", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 42, "wada": "Seashell Pink", "hex": "#fdd4bd", "kind": "exact", "ridgway": "Seashell Pink", "rhex": "#f6d6bc", "plate": "XIV", "de": 4.9}, {"i": 43, "wada": "Light Pinkish Cinnamon", "hex": "#fcc79b", "kind": "exact", "ridgway": "Light Pinkish Cinnamon", "rhex": "#e8ba96", "plate": "XXIX", "de": 8.6}, {"i": 44, "wada": "Pinkish Cinnamon", "hex": "#eeb480", "kind": "exact", "ridgway": "Pinkish Cinnamon", "rhex": "#e0a074", "plate": "XXIX", "de": 7.4}, {"i": 45, "wada": "Cinnamon Buff", "hex": "#fdc57e", "kind": "exact", "ridgway": "Cinnamon-Buff", "rhex": "#d9a874", "plate": "XXIX", "de": 15.4}, {"i": 46, "wada": "Cream Yellow", "hex": "#fdbf68", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 47, "wada": "Golden Yellow", "hex": "#f3a257", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 48, "wada": "Vinaceous Cinnamon", "hex": "#eea78c", "kind": "exact", "ridgway": "Vinaceous-Cinnamon", "rhex": "#d49772", "plate": "XXIX", "de": 10.4}, {"i": 49, "wada": "Ochraceous Salmon", "hex": "#d8a37b", "kind": "exact", "ridgway": "Ochraceous-Salmon", "rhex": "#faa66e", "plate": "XV", "de": 15.7}, {"i": 50, "wada": "Isabella Color", "hex": "#c5a56e", "kind": "exact", "ridgway": "Isabella Color", "rhex": "#a98856", "plate": "XXX", "de": 11.1}, {"i": 51, "wada": "Maple", "hex": "#c59f6b", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 52, "wada": "Olive Buff", "hex": "#c1c494", "kind": "exact", "ridgway": "Olive-Buff", "rhex": "#cfc2a1", "plate": "XL", "de": 8.4}, {"i": 53, "wada": "Ecru", "hex": "#c2ae93", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 54, "wada": "Yellow", "hex": "#fff200", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 55, "wada": "Lemon Yellow", "hex": "#f8ed43", "kind": "exact", "ridgway": "Lemon Yellow", "rhex": "#d4bd4e", "plate": "IV", "de": 26.3}, {"i": 56, "wada": "Apricot Yellow", "hex": "#ffdd00", "kind": "exact", "ridgway": "Apricot Yellow", "rhex": "#ecbe57", "plate": "IV", "de": 34.3}, {"i": 57, "wada": "Pyrite Yellow", "hex": "#cab356", "kind": "exact", "ridgway": "Pyrite Yellow", "rhex": "#bda33f", "plate": "IV", "de": 7.4}, {"i": 58, "wada": "Olive Ocher", "hex": "#d6b43e", "kind": "exact", "ridgway": "Olive-Ocher", "rhex": "#c6a34c", "plate": "XXX", "de": 14.3}, {"i": 59, "wada": "Yellow Ocher", "hex": "#e2b540", "kind": "exact", "ridgway": "Yellow Ocher", "rhex": "#df9a44", "plate": "XV", "de": 14.9}, {"i": 60, "wada": "Orange Yellow", "hex": "#fcb315", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 61, "wada": "Yellow Orange", "hex": "#f99d1b", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 62, "wada": "Apricot Orange", "hex": "#f68c50", "kind": "exact", "ridgway": "Apricot Orange", "rhex": "#f08455", "plate": "XIV", "de": 7.2}, {"i": 63, "wada": "Orange", "hex": "#f37420", "kind": "exact", "ridgway": "Orange", "rhex": "#fe8e07", "plate": "III", "de": 16.5}, {"i": 64, "wada": "Peach Red", "hex": "#f15a30", "kind": "exact", "ridgway": "Peach Red", "rhex": "#f9725c", "plate": "I", "de": 19.4}, {"i": 65, "wada": "English Red", "hex": "#d96629", "kind": "exact", "ridgway": "English Red", "rhex": "#bd512b", "plate": "II", "de": 15.0}, {"i": 66, "wada": "Cinnamon Rufous", "hex": "#c27544", "kind": "exact", "ridgway": "Cinnamon-Rufous", "rhex": "#ba6a4b", "plate": "XIV", "de": 10.0}, {"i": 67, "wada": "Orange Rufous", "hex": "#c16b27", "kind": "exact", "ridgway": "Orange-Rufous", "rhex": "#cb6325", "plate": "II", "de": 6.0}, {"i": 68, "wada": "Sulphine Yellow", "hex": "#c19f2c", "kind": "exact", "ridgway": "Sulphine Yellow", "rhex": "#c6a641", "plate": "IV", "de": 7.2}, {"i": 69, "wada": "Khaki", "hex": "#bc892b", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 70, "wada": "Citron Yellow", "hex": "#b2b73e", "kind": "exact", "ridgway": "Citron Yellow", "rhex": "#f4dd6e", "plate": "XVI", "de": 17.3}, {"i": 71, "wada": "Citrine", "hex": "#b09f36", "kind": "exact", "ridgway": "Citrine", "rhex": "#957f3a", "plate": "IV", "de": 18.8}, {"i": 72, "wada": "Buffy Citrine", "hex": "#96874d", "kind": "exact", "ridgway": "Buffy Citrine", "rhex": "#98834a", "plate": "XVI", "de": 1.2}, {"i": 73, "wada": "Dark Citrine", "hex": "#8b835b", "kind": "exact", "ridgway": "Dark Citrine", "rhex": "#776b39", "plate": "IV", "de": 11.5}, {"i": 74, "wada": "Light Grayish Olive", "hex": "#848061", "kind": "exact", "ridgway": "Light Grayish Olive", "rhex": "#9b9682", "plate": "XLVI", "de": 10.6}, {"i": 75, "wada": "Krongbergs Green", "hex": "#84875e", "kind": "spelling", "ridgway": "Kronberg's Green", "rhex": "#7c7d52", "plate": "XXXI", "de": 4.4}, {"i": 76, "wada": "Olive", "hex": "#837e31", "kind": "exact", "ridgway": "Olive", "rhex": "#645f46", "plate": "XXX", "de": 29.2}, {"i": 77, "wada": "Orange Citrine", "hex": "#986f2d", "kind": "exact", "ridgway": "Orange-Citrine", "rhex": "#947629", "plate": "IV", "de": 8.8}, {"i": 78, "wada": "Sudan Brown", "hex": "#a36752", "kind": "exact", "ridgway": "Sudan Brown", "rhex": "#97622d", "plate": "III", "de": 17.3}, {"i": 79, "wada": "Olive Green", "hex": "#6b7140", "kind": "exact", "ridgway": "Olive-Green", "rhex": "#6d6d3f", "plate": "IV", "de": 1.9}, {"i": 80, "wada": "Light Brownish Olive", "hex": "#806e4b", "kind": "exact", "ridgway": "Light Brownish Olive", "rhex": "#8b7653", "plate": "XXX", "de": 3.4}, {"i": 81, "wada": "Deep Grayish Olive", "hex": "#635a3a", "kind": "exact", "ridgway": "Deep Grayish Olive", "rhex": "#7c7965", "plate": "XLVI", "de": 14.9}, {"i": 82, "wada": "Pale Raw Umber", "hex": "#71502f", "kind": "modified", "ridgway": "Raw Umber", "rhex": "#695332", "plate": "III", "de": 7.1}, {"i": 83, "wada": "Sepia", "hex": "#644b1e", "kind": "exact", "ridgway": "Sepia", "rhex": "#665841", "plate": "XXIX", "de": 16.2}, {"i": 84, "wada": "Madder Brown", "hex": "#762c19", "kind": "exact", "ridgway": "Madder Brown", "rhex": "#854841", "plate": "XIII", "de": 17.6}, {"i": 85, "wada": "Mars Brown Tobacco", "hex": "#653514", "kind": "joined", "ridgway": "Mars Brown + Tobacco Brown", "rhex": null, "plate": null, "de": null}, {"i": 86, "wada": "Vandyke Brown", "hex": "#4b3317", "kind": "exact", "ridgway": "Vandyke Brown", "rhex": "#6a5040", "plate": "XXVIII", "de": 15.1}, {"i": 87, "wada": "Turquoise Green", "hex": "#b5decc", "kind": "exact", "ridgway": "Turquoise Green", "rhex": "#8dd8c8", "plate": "VII", "de": 11.4}, {"i": 88, "wada": "Glaucous Green", "hex": "#b4cdc2", "kind": "exact", "ridgway": "Glaucous-Green", "rhex": "#bccbb7", "plate": "XXXIII", "de": 6.1}, {"i": 89, "wada": "Dark Greenish Glaucous", "hex": "#b7c2a9", "kind": "exact", "ridgway": "Dark Greenish Glaucous", "rhex": "#9ab191", "plate": "XLI", "de": 10.1}, {"i": 90, "wada": "Yellow Green", "hex": "#afd472", "kind": "exact", "ridgway": "Yellow-Green", "rhex": "#dad23f", "plate": "VI", "de": 28.0}, {"i": 91, "wada": "Light Green Yellow", "hex": "#c7d14f", "kind": "exact", "ridgway": "Light Green-Yellow", "rhex": "#f0ed91", "plate": "V", "de": 19.6}, {"i": 92, "wada": "Night Green", "hex": "#87c540", "kind": "exact", "ridgway": "Night Green", "rhex": "#c6d857", "plate": "VI", "de": 16.0}, {"i": 93, "wada": "Olive Yellow", "hex": "#a6a159", "kind": "exact", "ridgway": "Olive-Yellow", "rhex": "#c5b554", "plate": "XXX", "de": 14.9}, {"i": 94, "wada": "Artemesia Green", "hex": "#709390", "kind": "spelling", "ridgway": "Artemisia Green", "rhex": "#778f83", "plate": "XLVII", "de": 6.7}, {"i": 95, "wada": "Andover Green", "hex": "#6d7e77", "kind": "exact", "ridgway": "Andover Green", "rhex": "#717960", "plate": "XLVII", "de": 11.3}, {"i": 96, "wada": "Rainette Green", "hex": "#8fa071", "kind": "exact", "ridgway": "Rainette Green", "rhex": "#9c995f", "plate": "XXXI", "de": 9.8}, {"i": 97, "wada": "Chromium Green", "hex": "#719470", "kind": "exact", "ridgway": "Chromium Green", "rhex": "#839261", "plate": "XXXII", "de": 10.1}, {"i": 98, "wada": "Pistachio Green", "hex": "#648f7b", "kind": "exact", "ridgway": "Pistachio Green", "rhex": "#7a9b7c", "plate": "XLI", "de": 8.5}, {"i": 99, "wada": "Sea Green", "hex": "#00b49b", "kind": "exact", "ridgway": "Sea Green", "rhex": "#388783", "plate": "XIX", "de": 28.0}, {"i": 100, "wada": "Benzol Green", "hex": "#00978d", "kind": "exact", "ridgway": "Benzol Green", "rhex": "#0194a5", "plate": "VII", "de": 30.0}, {"i": 101, "wada": "Light Porcelain Green", "hex": "#00908a", "kind": "exact", "ridgway": "Light Porcelain Green", "rhex": "#5f9288", "plate": "XXXIII", "de": 19.6}, {"i": 102, "wada": "Green", "hex": "#489b6e", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 103, "wada": "Dull Viridian Green", "hex": "#009465", "kind": "modified", "ridgway": "Viridian Green", "rhex": "#0c8970", "plate": "VII", "de": 15.6}, {"i": 104, "wada": "Oil Green", "hex": "#819238", "kind": "exact", "ridgway": "Oil Green", "rhex": "#848944", "plate": "V", "de": 8.9}, {"i": 105, "wada": "Diamine Green", "hex": "#1a7444", "kind": "exact", "ridgway": "Diamine Green", "rhex": "#396f5e", "plate": "VII", "de": 19.7}, {"i": 106, "wada": "Cossack Green", "hex": "#437742", "kind": "exact", "ridgway": "Cossack Green", "rhex": "#486d4d", "plate": "VI", "de": 12.1}, {"i": 107, "wada": "Lincoln Green", "hex": "#555832", "kind": "exact", "ridgway": "Lincoln Green", "rhex": "#656d4f", "plate": "XLI", "de": 10.3}, {"i": 108, "wada": "Blackish Olive", "hex": "#42533e", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 109, "wada": "Deep Slate Olive", "hex": "#253122", "kind": "exact", "ridgway": "Deep Slate-Olive", "rhex": "#515f52", "plate": "XLVII", "de": 20.1}, {"i": 110, "wada": "Nile Blue", "hex": "#bce4e5", "kind": "exact", "ridgway": "Nile Blue", "rhex": "#8ccac4", "plate": "XIX", "de": 13.2}, {"i": 111, "wada": "Pale King's Blue", "hex": "#a7d4e4", "kind": "exact", "ridgway": "Pale King's Blue", "rhex": "#c1ccd4", "plate": "XXII", "de": 13.0}, {"i": 112, "wada": "Light Glaucous Blue", "hex": "#a5c8d1", "kind": "exact", "ridgway": "Light Glaucous-Blue", "rhex": "#a2bdbd", "plate": "XXXIV", "de": 6.8}, {"i": 113, "wada": "Salvia Blue", "hex": "#97acc8", "kind": "exact", "ridgway": "Salvia Blue", "rhex": "#6190eb", "plate": "IX", "de": 37.8}, {"i": 114, "wada": "Cobalt Green", "hex": "#96d1aa", "kind": "exact", "ridgway": "Cobalt Green", "rhex": "#7bc6a0", "plate": "XIX", "de": 7.9}, {"i": 115, "wada": "Calamine BLue", "hex": "#78cdd0", "kind": "exact", "ridgway": "Calamine Blue", "rhex": "#81ccdc", "plate": "VIII", "de": 8.6}, {"i": 116, "wada": "Venice Green", "hex": "#62c6bf", "kind": "exact", "ridgway": "Venice Green", "rhex": "#5cc8b9", "plate": "VII", "de": 5.2}, {"i": 117, "wada": "Cerulian Blue", "hex": "#0093a5", "kind": "spelling", "ridgway": "Cerulean Blue", "rhex": "#0d88cd", "plate": "VIII", "de": 34.7}, {"i": 118, "wada": "Peacock Blue", "hex": "#00939b", "kind": "exact", "ridgway": "Peacock Blue", "rhex": "#026998", "plate": "VIII", "de": 45.5}, {"i": 119, "wada": "Green Blue", "hex": "#099197", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 120, "wada": "Olympic Blue", "hex": "#5a82b3", "kind": "exact", "ridgway": "Olympic Blue", "rhex": "#5a93d1", "plate": "XX", "de": 9.9}, {"i": 121, "wada": "Blue", "hex": "#006eb8", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 122, "wada": "Antwarp Blue", "hex": "#007190", "kind": "spelling", "ridgway": "Antwerp Blue", "rhex": "#085d93", "plate": "VIII", "de": 28.9}, {"i": 123, "wada": "Helvetia Blue", "hex": "#005b8d", "kind": "exact", "ridgway": "Helvetia Blue", "rhex": "#3851a1", "plate": "IX", "de": 31.0}, {"i": 124, "wada": "Dark Medici Blue", "hex": "#547076", "kind": "exact", "ridgway": "Dark Medici Blue", "rhex": "#5a7677", "plate": "XLVIII", "de": 3.9}, {"i": 125, "wada": "Dusky Green", "hex": "#004f46", "kind": "exact", "ridgway": "Dusky Green", "rhex": "#43594e", "plate": "XXXIII", "de": 27.4}, {"i": 126, "wada": "Deep Lyons Blue", "hex": "#1c4286", "kind": "modified", "ridgway": "Lyons Blue", "rhex": "#2554c2", "plate": "IX", "de": 28.7}, {"i": 127, "wada": "Violet Blue", "hex": "#40456a", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 128, "wada": "Vandar Poel's Blue", "hex": "#064f6e", "kind": "spelling", "ridgway": "Vanderpoel's Blue", "rhex": "#5b88ba", "plate": "XX", "de": 27.4}, {"i": 129, "wada": "Dark Tyrian Blue", "hex": "#12354e", "kind": "exact", "ridgway": "Dark Tyrian Blue", "rhex": "#4a647f", "plate": "XXXIV", "de": 21.1}, {"i": 130, "wada": "Dull Violet Black", "hex": "#1e0e3f", "kind": "exact", "ridgway": "Dull Violet-Black 3", "rhex": "#3e4545", "plate": "L", "de": 41.2}, {"i": 131, "wada": "Deep Indigo", "hex": "#051230", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 132, "wada": "Deep Slate Green", "hex": "#112f2c", "kind": "exact", "ridgway": "Deep Slate-Green", "rhex": "#475a51", "plate": "XLVII", "de": 20.4}, {"i": 133, "wada": "Grayish Lavender - A", "hex": "#b5b1d8", "kind": "exact", "ridgway": "Grayish Lavender", "rhex": "#bcb6be", "plate": "XLIII", "de": 16.6}, {"i": 134, "wada": "Grayish Lavender - B", "hex": "#c0a9b3", "kind": "exact", "ridgway": "Grayish Lavender", "rhex": "#bcb6be", "plate": "XLIII", "de": 7.4}, {"i": 135, "wada": "Laelia Pink", "hex": "#ca92a8", "kind": "exact", "ridgway": "Laelia Pink", "rhex": "#d09aaa", "plate": "XXXVIII", "de": 3.8}, {"i": 136, "wada": "Lilac", "hex": "#b984af", "kind": "exact", "ridgway": "Lilac", "rhex": "#ceacda", "plate": "XXV", "de": 14.8}, {"i": 137, "wada": "Eupatorium Purple", "hex": "#bf5892", "kind": "exact", "ridgway": "Eupatorium Purple", "rhex": "#a87797", "plate": "XXXVIII", "de": 22.7}, {"i": 138, "wada": "Light Mauve", "hex": "#9a72aa", "kind": "exact", "ridgway": "Light Mauve", "rhex": "#cfabdd", "plate": "XXV", "de": 21.3}, {"i": 139, "wada": "Aconite Violet", "hex": "#a36aa5", "kind": "exact", "ridgway": "Aconite Violet", "rhex": "#8b678f", "plate": "XXXVII", "de": 11.6}, {"i": 140, "wada": "Dull Blue Violet", "hex": "#80719e", "kind": "exact", "ridgway": "Dull Blue-Violet 2", "rhex": "#6a617f", "plate": "XXXVI", "de": 10.6}, {"i": 141, "wada": "Dark Soft Violet", "hex": "#66629c", "kind": "modified", "ridgway": "Dark Soft Blue-Violet", "rhex": "#59588f", "plate": "XXIII", "de": 4.9}, {"i": 142, "wada": "Blue Violet", "hex": "#6450a1", "kind": "exact", "ridgway": "Blue-Violet", "rhex": "#5e4ec4", "plate": "X", "de": 23.1}, {"i": 143, "wada": "Purple Drab", "hex": "#84565b", "kind": "exact", "ridgway": "Purple-Drab", "rhex": "#927a79", "plate": "XLV", "de": 15.8}, {"i": 144, "wada": "Deep Violet / Plumbeous", "hex": "#70727c", "kind": "exact", "ridgway": "Deep Violet-Plumbeous", "rhex": "#777f8b", "plate": "XLIX", "de": 5.3}, {"i": 145, "wada": "Veronia Purple", "hex": "#8c4c62", "kind": "spelling", "ridgway": "Vernonia Purple", "rhex": "#9a606b", "plate": "XXXVIII", "de": 8.6}, {"i": 146, "wada": "Dark Slate Purple", "hex": "#704357", "kind": "exact", "ridgway": "Dark Slate-Purple", "rhex": "#63565e", "plate": "XLIV", "de": 15.8}, {"i": 147, "wada": "Taupe Brown", "hex": "#7a4456", "kind": "exact", "ridgway": "Taupe Brown", "rhex": "#4e4242", "plate": "XLIV", "de": 21.7}, {"i": 148, "wada": "Violet Carmine", "hex": "#713b4c", "kind": "exact", "ridgway": "Violet Carmine", "rhex": "#61373d", "plate": "XII", "de": 8.2}, {"i": 149, "wada": "Violet", "hex": "#4f4086", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 150, "wada": "Red Violet", "hex": "#59256a", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 151, "wada": "Cotinga Purple", "hex": "#501345", "kind": "exact", "ridgway": "Cotinga Purple", "rhex": "#683b67", "plate": "XI", "de": 14.7}, {"i": 152, "wada": "Dusky Madder Violet", "hex": "#4e1d4c", "kind": "modified", "ridgway": "Dark Madder Violet", "rhex": "#4a4559", "plate": "XXV", "de": 25.3}, {"i": 153, "wada": "White", "hex": "#ffffff", "kind": "exact", "ridgway": "White", "rhex": "#faf5ea", "plate": "LIII", "de": 6.8}, {"i": 154, "wada": "Neutral Gray", "hex": "#b6bfc1", "kind": "exact", "ridgway": "Neutral Gray", "rhex": "#faf5ea", "plate": "LIII", "de": 21.6}, {"i": 155, "wada": "Mineral Gray", "hex": "#a2b0ad", "kind": "exact", "ridgway": "Mineral Gray", "rhex": "#aeb1a3", "plate": "XLVII", "de": 7.2}, {"i": 156, "wada": "Warm Gray", "hex": "#a1a39a", "kind": "none", "ridgway": null, "rhex": null, "plate": null, "de": null}, {"i": 157, "wada": "Slate Color", "hex": "#34454c", "kind": "exact", "ridgway": "Slate Color", "rhex": "#4f5b5d", "plate": "LIII", "de": 10.8}, {"i": 158, "wada": "Black", "hex": "#111314", "kind": "exact", "ridgway": "Black", "rhex": "#323f39", "plate": "LIII", "de": 20.9}], BASE=51.9, NS='http://www.w3.org/2000/svg';
+const kinds=[['exact','Same name','k1'],['spelling','Same name, misspelt','k2'],['modified','Ridgway name with a word added','k3'],['none','No Ridgway match','k4']];
+const count=k=>ROWS.filter(r=>r.kind===k||(k==='exact'&&r.kind==='joined')).length;
+const n1=count('exact'),n2=count('spelling'),n3=count('modified'),n4=count('none');
+document.getElementById('pull').textContent=`${n1+n2} of Wada’s 159 colours (${Math.round((n1+n2)/159*100)}%) carry one of Ridgway’s names. ${n3} more are a Ridgway name with a word added.`;
+const split=document.getElementById('split');split.setAttribute('aria-label',`${n1} same name, ${n2} misspelt, ${n3} modified, ${n4} no match`);
+[[n1,'k1'],[n2,'k2'],[n3,'k3'],[n4,'k4']].forEach(([n,c])=>{const d=document.createElement('div');d.className=c;d.style.width=(n/159*100)+'%';d.textContent=n;split.appendChild(d);});
+document.getElementById('legend').innerHTML=kinds.map(k=>`<span><i class="${k[2]}"></i>${k[1]}</span>`).join('');
+
+// distribution
+const des=ROWS.filter(r=>(r.kind==='exact'||r.kind==='spelling')&&r.de!=null).map(r=>r.de);
+const svg=document.getElementById('dist'),X0=24,X1=736,max=80,sx=v=>X0+Math.min(v,max)/max*(X1-X0);
+const pts=ROWS.filter(r=>(r.kind==='exact'||r.kind==='spelling')&&r.de!=null).sort((a,b)=>a.de-b.de);
+const bc={};pts.forEach(r=>{const b=Math.floor(Math.min(r.de,max)/2);bc[b]=(bc[b]||0)+1;});
+const stack=Math.max(...Object.values(bc)),gap=9,Y=60+stack*gap;
+svg.setAttribute('viewBox',`0 0 760 ${Y+80}`);
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e;};
+[0,20,40,60,80].forEach(v=>{el('line',{x1:sx(v),x2:sx(v),y1:44,y2:Y+8,stroke:'var(--line)'});el('text',{x:sx(v),y:Y+34,'text-anchor':v===0?'start':'middle'}).textContent=v===80?'80+':v;});
+el('text',{x:(X0+X1)/2,y:Y+68,'text-anchor':'middle'}).textContent='Difference between the two swatches (ΔE)';
+const bins={};const tip=document.getElementById('tip');
+pts.forEach(r=>{
+  const b=Math.floor(Math.min(r.de,max)/2);bins[b]=(bins[b]||0)+1;const cx=sx(b*2+1),cy=Y-4-(bins[b]-1)*gap;
+  const c=el('circle',{cx,cy,r:4.2,fill:r.hex,stroke:'var(--ink-muted)','stroke-width':.8});
+  c.addEventListener('pointerenter',()=>{const s=svg.getBoundingClientRect().width/760;tip.textContent=`${r.wada} · ΔE ${r.de}`;tip.style.left=(cx*s+16)+'px';tip.style.top=(cy*s+16)+'px';tip.hidden=false;});
+  c.addEventListener('pointerleave',()=>tip.hidden=true);
+});
+const med=a=>{const s=[...a].sort((x,y)=>x-y);return s[Math.floor(s.length/2)];};
+const m1=med(des);
+el('line',{x1:sx(m1),x2:sx(m1),y1:30,y2:Y+8,stroke:'var(--ink)','stroke-width':2});
+el('text',{x:sx(m1)+6,y:26}).textContent=`Same name: ${m1.toFixed(0)}`;
+el('line',{x1:sx(BASE),x2:sx(BASE),y1:30,y2:Y+8,stroke:'var(--ink)','stroke-width':2,'stroke-dasharray':'5 4'});
+el('text',{x:sx(BASE)+6,y:26}).textContent=`Random: ${BASE.toFixed(0)}`;
+document.getElementById('disttxt').textContent=`Each dot is one colour, in Wada’s colour. Same-named pairs differ by a median of ${m1.toFixed(0)}; random pairs differ by ${BASE.toFixed(0)}. ${des.filter(d=>d<10).length} of ${des.length} are within 10, close enough to pass for the same colour. The big misses are mostly blues and very strong colours, where modern printing and a century-old faded plate disagree most.`;
+
+// typos
+document.getElementById('typos').innerHTML=ROWS.filter(r=>r.kind==='spelling').map(r=>`<div class="typo"><i style="background:${r.hex}"></i><span><s></s> <b></b></span></div>`).join('');
+[...document.querySelectorAll('.typo')].forEach((d,j)=>{const r=ROWS.filter(r=>r.kind==='spelling')[j];d.querySelector('s').textContent=r.wada;d.querySelector('b').textContent='→ '+r.ridgway;});
+
+// grid
+const seg=document.getElementById('seg');let cur='all';
+[['all','All 159'],['exact','Same name'],['spelling','Misspelt'],['modified','Word added'],['none','No match']].forEach(([k,l])=>{const b=document.createElement('button');b.type='button';b.textContent=l;b.setAttribute('aria-pressed',k===cur);b.onclick=()=>{cur=k;[...seg.children].forEach(x=>x.setAttribute('aria-pressed',x===b));draw();};seg.appendChild(b);});
+function draw(){
+  const g=document.getElementById('grid');g.innerHTML='';
+  ROWS.filter(r=>cur==='all'||r.kind===cur||(cur==='exact'&&r.kind==='joined')).forEach(r=>{
+    const d=document.createElement('div');d.className='pair';
+    d.innerHTML=`<div class="sw"><i style="background:${r.hex}"></i>${r.rhex?`<i style="background:${r.rhex}"></i>`:`<i style="background:repeating-linear-gradient(45deg,var(--line) 0 4px,transparent 4px 8px)"></i>`}</div><div class="pn"><b></b><span></span></div><div class="de">${r.de!=null?'ΔE '+r.de:''}</div>`;
+    d.querySelector('b').textContent=r.wada;d.querySelector('.pn span').textContent=r.ridgway?(r.kind==='exact'?'Ridgway: same':'Ridgway: '+r.ridgway):'No Ridgway name';
+    g.appendChild(d);});
+}
+draw();
+</script>
+
+</body>
+</html>

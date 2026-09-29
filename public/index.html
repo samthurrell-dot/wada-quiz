@@ -114,6 +114,7 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
 .brand{display:flex;gap:4px;text-decoration:none;padding:8px 0;}
 .brand .dot{width:18px;height:18px;display:block;}
 .appnav{display:flex;align-items:center;gap:8px;}
+a.link{display:inline-flex;align-items:center;}
 .link{background:none;border:0;color:var(--ink);font-weight:700;font-size:15px;min-height:44px;padding:0 8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
 .link[disabled]{opacity:.35;cursor:default;}
 .chip{background:var(--raised);border:1px solid var(--line-strong);border-radius:999px;color:var(--ink);font-size:14px;font-weight:700;min-height:36px;padding:0 14px;cursor:pointer;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -150,6 +151,7 @@ table.lb{width:100%;border-collapse:collapse;font-size:15px;}
   <header class="appbar">
     <a href="#" class="brand" id="home" aria-label="Wada you know about colour? Home"><span class="dot" style="background:#bb7125"></span><span class="dot" style="background:#12354e"></span><span class="dot" style="background:#a62c37"></span></a>
     <div class="appnav">
+      <a class="link" href="/learn/" id="navlearn">Learn</a>
       <button type="button" class="link" id="navboard">Leaderboard</button>
       <button type="button" class="chip" id="whoami" hidden></button>
     </div>
@@ -226,6 +228,7 @@ table.lb{width:100%;border-collapse:collapse;font-size:15px;}
     <p class="rank" id="rrank" hidden></p>
     <pre class="grid" id="rgrid" aria-label="Your result grid"></pre>
     <div class="row"><button type="button" class="btn" id="share">Copy my result</button><button type="button" class="btn alt" id="toboard">Leaderboard</button><button type="button" class="btn alt" id="again">Practice round</button></div>
+    <p class="small muted">Curious where these names come from? <a href="/learn/">Learn about Wada’s colours</a>.</p>
     <div class="rlist" id="rlist"></div>
   </section>
 
